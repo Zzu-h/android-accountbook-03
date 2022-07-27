@@ -1,4 +1,4 @@
-package com.woowa.myapplication.ui.theme
+package com.woowa.accountbook.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
