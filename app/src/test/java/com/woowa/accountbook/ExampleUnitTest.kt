@@ -1,4 +1,4 @@
-package com.woowa.myapplication
+package com.woowa.accountbook
 
 import org.junit.Test
 

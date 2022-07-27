@@ -1,4 +1,4 @@
-package com.woowa.myapplication.ui.theme
+package com.woowa.accountbook.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
