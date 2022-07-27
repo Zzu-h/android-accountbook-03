@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">accountbook</string>
+
+    <!--fragment tag-->
+    <string name="fragment_history">history</string>
+    <string name="fab_new_account">새 수입 또는 지출 등록</string>
 </resources>
