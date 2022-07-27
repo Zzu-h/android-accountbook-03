@@ -1,4 +1,4 @@
-package com.woowa.accountbook
+package com.woowa.accountbook.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
