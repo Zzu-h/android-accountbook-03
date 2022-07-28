@@ -9,17 +9,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.woowa.accountbook.ui.theme.Blue1
+import com.woowa.accountbook.domain.Category
 import com.woowa.accountbook.ui.theme.Typography
 
 @Composable
 fun CategoryCard(
-    text: String,
+    category: Category,
     modifier: Modifier = Modifier,
-    color: Color = Blue1,
 ) {
+    val text = category.name
+    val color = category.color
+
     Box(
         modifier = modifier
             .background(
