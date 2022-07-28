@@ -1,4 +1,4 @@
-package com.woowa.accountbook.domain
+package com.woowa.accountbook.domain.model
 
 import java.util.*
 

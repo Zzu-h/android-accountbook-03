@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.Account
+import com.woowa.accountbook.domain.model.Account
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.StringUtil
