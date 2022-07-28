@@ -1,4 +1,4 @@
-package com.woowa.accountbook.domain
+package com.woowa.accountbook.domain.model
 
 import androidx.compose.ui.graphics.Color
 import com.woowa.accountbook.ui.theme.Purple2
