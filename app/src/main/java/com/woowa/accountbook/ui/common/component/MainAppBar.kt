@@ -3,6 +3,7 @@ package com.woowa.accountbook.ui.common.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -24,9 +25,14 @@ fun MainAppBar(
     title: String,
     buttonVisible: Boolean = true,
 ) {
+    val height = 56.dp
     val contentColor = MaterialTheme.colors.primary
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height)
+    ) {
 
         if (buttonVisible)
             Icon(
