@@ -2,6 +2,7 @@ package com.woowa.accountbook.ui.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.woowa.accountbook.ui.common.component.CommonButton
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.SubAppBar
 import com.woowa.accountbook.ui.theme.AccountbookTheme
@@ -19,5 +20,13 @@ fun MainAppBarPreview() {
 fun SubAppBarPreview() {
     AccountbookTheme {
         SubAppBar(title = "Preview!")
+    }
+}
+
+@Preview
+@Composable
+fun CommonButtonPreview() {
+    AccountbookTheme {
+        CommonButton(text = "Preview!")
     }
 }

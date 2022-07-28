@@ -9,6 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 
 val White50 = Color(0x80FFFFFF)
 val Yellow = Color(0xFFF5B853)
+val DisableYellow = Color(0xFFFADCA9)
 val Red = Color(0xFFE75B3F)
 val OffWhite = Color(0xFFF7F6F3)
 val BackgroundDark = Color(0xFF272727)
