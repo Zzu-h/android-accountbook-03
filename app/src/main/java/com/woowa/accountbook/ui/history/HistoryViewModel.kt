@@ -11,6 +11,9 @@ class HistoryViewModel : ViewModel() {
     val historyCalendar = MutableLiveData<List<MutableList<Account>>>()
     val historyTitle = MutableLiveData("hihi")
 
+    val incomeFilter = MutableLiveData(true)
+    val expenditureFilter = MutableLiveData(true)
+
     var totIncome = 0
     var totExpenditure = 0
 
@@ -27,5 +30,17 @@ class HistoryViewModel : ViewModel() {
             else if (it.type == AccountType.EXPENDITURE) totExpenditure += it.price
         }
         historyCalendar.value = list
+    }
+
+    fun filteringIncomeData(){
+        val flag = !(incomeFilter.value ?: true)
+
+        incomeFilter.value = flag
+    }
+
+    fun filteringExpenditureData(){
+        val flag = !(expenditureFilter.value ?: true)
+
+        expenditureFilter.value = flag
     }
 }
