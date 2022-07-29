@@ -1,24 +1,16 @@
 package com.woowa.accountbook.data.datasource
 
-import com.woowa.accountbook.data.dto.DBExpenditureDto
-import com.woowa.accountbook.data.dto.DBIncomeDto
+import com.woowa.accountbook.data.dto.DBAccountDto
+import com.woowa.accountbook.domain.model.AccountType
 
 
 class AccountBookDataSource {
-    suspend fun getIncomeHistory(year: Int, month: Int): Result<List<DBIncomeDto>>{
-        return kotlin.runCatching {
-            val list = mutableListOf<DBIncomeDto>()
-            list.add(DBIncomeDto(1234,"hi"))
-            list.add(DBIncomeDto(5678,"hello"))
-            list
-        }
-    }
 
-    suspend fun getExpenditureHistory(year: Int, month: Int): Result<List<DBExpenditureDto>>{
+    suspend fun getAllHistory(year: Int, month: Int): Result<List<DBAccountDto>> {
         return kotlin.runCatching {
-            val list = mutableListOf<DBExpenditureDto>()
-            list.add(DBExpenditureDto(1234,"hi"))
-            list.add(DBExpenditureDto(5678,"hello"))
+            val list = mutableListOf<DBAccountDto>()
+            list.add(DBAccountDto(1234, "hi", "content", type = AccountType.INCOME))
+            list.add(DBAccountDto(5678, "hello",null, type = AccountType.INCOME))
             list
         }
     }
