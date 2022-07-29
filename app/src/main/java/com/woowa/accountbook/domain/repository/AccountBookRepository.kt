@@ -1,10 +1,8 @@
 package com.woowa.accountbook.domain.repository
 
-import com.woowa.accountbook.domain.model.Expenditure
-import com.woowa.accountbook.domain.model.Income
+import com.woowa.accountbook.domain.model.Account
 
 interface AccountBookRepository {
 
-    suspend fun getIncomeHistory(year: Int, month: Int): Result<List<Income>>
-    suspend fun getExpenditureHistory(year: Int, month: Int): Result<List<Expenditure>>
+    suspend fun getAllHistory(year: Int, month: Int): Result<List<Account>>
 }
