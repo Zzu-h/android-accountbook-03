@@ -18,7 +18,7 @@ object DateUtil {
         val date = Calendar.getInstance()
         date.set(year, month, day)
 
-        return date.get(Calendar.DAY_OF_WEEK)
+        return (date.get(Calendar.DAY_OF_WEEK) + 3).mod(7).plus(1)
     }
 
     fun getDayOfWeek(year: Int, month: Int, day: Int): String {
@@ -28,12 +28,12 @@ object DateUtil {
 
     private fun getDayOfWeekKR(code: Int): String =
         when (code) {
-            1 -> "월"
-            2 -> "화"
-            3 -> "수"
-            4 -> "목"
-            5 -> "금"
-            6 -> "토"
+            Calendar.MONDAY -> "월"
+            Calendar.TUESDAY -> "화"
+            Calendar.WEDNESDAY -> "수"
+            Calendar.THURSDAY -> "목"
+            Calendar.FRIDAY -> "금"
+            Calendar.SATURDAY -> "토"
             else -> "일"
         } + "요일"
 
