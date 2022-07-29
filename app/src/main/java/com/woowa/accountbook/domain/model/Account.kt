@@ -1,6 +1,6 @@
 package com.woowa.accountbook.domain.model
 
-object AccountType{
+object AccountType {
     const val INCOME = true
     const val EXPENDITURE = false
 }
