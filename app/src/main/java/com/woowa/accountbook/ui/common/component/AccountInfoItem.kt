@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Account
@@ -74,8 +75,10 @@ fun AccountInfoItem(
         ) {
             Text(
                 text = payment, modifier = Modifier
-                    .padding(bottom = 8.dp),
-                color = contentColor
+                    .padding(bottom = 8.dp)
+                    .align(Alignment.End),
+                color = contentColor,
+                textAlign = TextAlign.End
             )
             Text(
                 text = price,
