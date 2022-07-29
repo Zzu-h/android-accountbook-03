@@ -57,16 +57,7 @@ class AccountBookViewModel @Inject constructor(
     }
 
     private fun adjustYearAndMonth(year: Int, month: Int) {
-        var tmpMonth = month
-        var tmpYear = year
-
-        if (month <= 0) {
-            tmpMonth = 12
-            tmpYear -= 1
-        } else if (month >= 13) {
-            tmpMonth = 1
-            tmpYear += 1
-        }
+        val (tmpYear, tmpMonth) = DateUtil.adjustYearAndMonth(year, month)
 
         _year.value = tmpYear
         _month.value = tmpMonth
