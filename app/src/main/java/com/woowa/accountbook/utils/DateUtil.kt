@@ -1,7 +1,5 @@
 package com.woowa.accountbook.utils
 
-import android.os.Build
-import java.time.LocalDate
 import java.util.*
 
 object DateUtil {
@@ -15,14 +13,17 @@ object DateUtil {
     }
 
     fun getDateToString() {}
-    fun getDayOfWeek(year: Int, month: Int, day: Int): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val date = LocalDate.of(year, month, day)
-            val dayOfWeek = date.dayOfWeek
-            val dayOfWeekNumber = dayOfWeek.value
 
-            getDayOfWeekKR(dayOfWeekNumber)
-        } else currentDayOfWeek
+    fun getDayOfWeekCode(year: Int, month: Int, day: Int): Int {
+        val date = Calendar.getInstance()
+        date.set(year, month, day)
+
+        return date.get(Calendar.DAY_OF_WEEK)
+    }
+
+    fun getDayOfWeek(year: Int, month: Int, day: Int): String {
+
+        return getDayOfWeekKR(getDayOfWeekCode(year, month, day))
     }
 
     private fun getDayOfWeekKR(code: Int): String =
@@ -49,5 +50,11 @@ object DateUtil {
         }
 
         return Pair(tmpYear, tmpMonth)
+    }
+
+    fun getLastDayOfMonth(year: Int, month: Int): Int = when (month) {
+        2 -> if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) 290 else 20
+        1, 3, 5, 7, 8, 10, 12 -> 31
+        else -> 30
     }
 }
