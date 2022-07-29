@@ -18,8 +18,10 @@ import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
+import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.theme.AccountbookTheme
+import com.woowa.accountbook.utils.DateUtil
 
 class HistoryFragment : Fragment() {
 
@@ -41,6 +43,12 @@ class HistoryFragment : Fragment() {
                         title = title,
                         onNextIconPressed = { accountBookViewModel.plusMonth() },
                         onPrevIconPressed = { accountBookViewModel.minusMonth() },
+                        onTitlePressed = {
+                            MonthYearPickerDialog(DateUtil.currentYear, DateUtil.currentMonth).show(
+                                parentFragmentManager,
+                                getString(R.string.fragment_calendar)
+                            )
+                        }
                     )
                 }
             }
