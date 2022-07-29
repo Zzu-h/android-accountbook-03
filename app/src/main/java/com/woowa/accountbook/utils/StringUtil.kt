@@ -15,9 +15,6 @@ object StringUtil {
     fun getPriceToString(price: Int, isMinus: Boolean): String {
         val str = format.format(price.absoluteValue)
 
-        return "${if (isMinus) '-' else ""}$str 원"
+        return "${if (isMinus) '-' else ""}${str.removeRange(0,1)} 원"
     }
-
-    fun getDateToString() {}
 }
-

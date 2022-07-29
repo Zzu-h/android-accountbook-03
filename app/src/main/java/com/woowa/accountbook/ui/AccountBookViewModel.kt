@@ -3,10 +3,10 @@ package com.woowa.accountbook.ui
 import androidx.lifecycle.*
 import com.woowa.accountbook.domain.model.Account
 import com.woowa.accountbook.domain.repository.AccountBookRepository
+import com.woowa.accountbook.utils.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,9 +25,8 @@ class AccountBookViewModel @Inject constructor(
     val totalList: LiveData<List<Account>> = _totalList.asLiveData()
 
     init {
-        val calendar: Calendar = Calendar.getInstance()
-        this._year = MutableLiveData(calendar.get(Calendar.YEAR))
-        this._month = MutableLiveData(calendar.get(Calendar.MONTH))
+        this._year = MutableLiveData(DateUtil.currentYear)
+        this._month = MutableLiveData(DateUtil.currentMonth)
 
         this.year = _year
         this.month = _month
@@ -50,11 +49,9 @@ class AccountBookViewModel @Inject constructor(
     private fun fetchData() {
         if (isNull) return
         viewModelScope.launch {
-            launch {
-                accountBookRepository.getAllHistory(_year.value!!, _month.value!!)
-                    .onSuccess { _totalList.emit(it) }
-                    .onFailure { it.printStackTrace() }
-            }
+            accountBookRepository.getAllHistory(_year.value!!, _month.value!!)
+                .onSuccess { _totalList.emit(it) }
+                .onFailure { it.printStackTrace() }
         }
     }
 
