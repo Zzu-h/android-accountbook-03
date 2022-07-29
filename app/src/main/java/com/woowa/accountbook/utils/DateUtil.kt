@@ -35,4 +35,19 @@ object DateUtil {
             6 -> "토"
             else -> "일"
         } + "요일"
+
+    fun adjustYearAndMonth(year: Int, month: Int): Pair<Int, Int> {
+        var tmpMonth = month
+        var tmpYear = year
+
+        if (month <= 0) {
+            tmpMonth = 12
+            tmpYear -= 1
+        } else if (month >= 13) {
+            tmpMonth = 1
+            tmpYear += 1
+        }
+
+        return Pair(tmpYear, tmpMonth)
+    }
 }
