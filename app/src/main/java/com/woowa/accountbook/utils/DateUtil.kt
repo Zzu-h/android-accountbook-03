@@ -18,7 +18,7 @@ object DateUtil {
     fun getDayOfWeek(year: Int, month: Int, day: Int): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val date = LocalDate.of(year, month, day)
-            val dayOfWeek = date.getDayOfWeek()
+            val dayOfWeek = date.dayOfWeek
             val dayOfWeekNumber = dayOfWeek.value
 
             getDayOfWeekKR(dayOfWeekNumber)

@@ -8,21 +8,24 @@ import com.woowa.accountbook.domain.model.AccountType
 class HistoryViewModel : ViewModel() {
     val maxDate = 32
 
-    val historyCalendar =
-        List<MutableLiveData<MutableList<Account>>>(maxDate) { MutableLiveData(mutableListOf()) }
+    val historyCalendar = MutableLiveData<List<MutableList<Account>>>()
     val historyTitle = MutableLiveData("hihi")
 
     var totIncome = 0
     var totExpenditure = 0
 
+    var year = 2022
+    var month = 7
+
     fun setTotalData(totList: List<Account>) {
         totIncome = 0
         totExpenditure = 0
-        historyCalendar.forEach { it.value = mutableListOf() }
+        val list = List<MutableList<Account>>(maxDate) { mutableListOf() }
         totList.forEach {
-            historyCalendar[it.day].value?.add(it)
+            list[it.day].add(it)
             if (it.type == AccountType.INCOME) totIncome += it.price
             else if (it.type == AccountType.EXPENDITURE) totExpenditure += it.price
         }
+        historyCalendar.value = list
     }
 }

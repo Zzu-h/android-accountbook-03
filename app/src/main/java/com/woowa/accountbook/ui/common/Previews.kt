@@ -46,7 +46,6 @@ fun CategoryCardPreview() {
 fun AccountInfoPreview() {
     AccountbookTheme {
         AccountInfoItem(
-            isExpenditure = false,
             account = DBAccountDto(1234, "hi", "content", type = AccountType.INCOME).toAccount(),
         )
     }

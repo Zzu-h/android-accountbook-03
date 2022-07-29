@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
@@ -14,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
+import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 
@@ -43,23 +43,19 @@ class HistoryFragment : Fragment() {
         }
         rootView.findViewById<ComposeView>(R.id.cv_history_content).apply {
             setContent {
-                //val calendarData by historyViewModel.historyCalendar.forEach { it.observeAsState() }
-                LazyColumn {
-                    for(day in 1..historyViewModel.maxDate){
+                val calendarData by historyViewModel.historyCalendar.observeAsState()
 
-                    }
-                    item {
-                        Text(text = "First item")
-                    }
-
-                    // Add 5 items
-                    items(5) { index ->
-                        Text(text = "Item: $index")
-                    }
-
-                    // Add another single item
-                    item {
-                        Text(text = "Last item")
+                AccountbookTheme {
+                    Column {
+                        calendarData?.forEachIndexed { date, item ->
+                            if (item.isNotEmpty())
+                                AccountInfoPerDayItem(
+                                    accountList = item,
+                                    year = historyViewModel.year,
+                                    month = historyViewModel.month,
+                                    day = date
+                                )
+                        }
                     }
                 }
             }
@@ -86,13 +82,11 @@ class HistoryFragment : Fragment() {
             historyViewModel.setTotalData(data)
         }
         accountBookViewModel.month.observe(this.viewLifecycleOwner) { month ->
-            val year = accountBookViewModel.year.value ?: 0
-            val createTitle = "${year}년 ${month}월"
+            historyViewModel.year = accountBookViewModel.year.value ?: 2022
+            historyViewModel.month = month
+            val createTitle = "${historyViewModel.year}년 ${month}월"
 
             historyViewModel.historyTitle.value = createTitle
-        }
-        historyViewModel.historyCalendar.forEachIndexed { index, item ->
-            item.observe(this.viewLifecycleOwner) { }
         }
     }
 }
