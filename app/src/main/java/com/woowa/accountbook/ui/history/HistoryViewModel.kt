@@ -32,13 +32,13 @@ class HistoryViewModel : ViewModel() {
         historyCalendar.value = list
     }
 
-    fun filteringIncomeData(){
+    fun filteringIncomeData() {
         val flag = !(incomeFilter.value ?: true)
 
         incomeFilter.value = flag
     }
 
-    fun filteringExpenditureData(){
+    fun filteringExpenditureData() {
         val flag = !(expenditureFilter.value ?: true)
 
         expenditureFilter.value = flag
