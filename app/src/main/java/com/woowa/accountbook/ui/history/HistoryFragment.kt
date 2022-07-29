@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +18,7 @@ import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
+import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 
 class HistoryFragment : Fragment() {
@@ -44,9 +48,18 @@ class HistoryFragment : Fragment() {
         rootView.findViewById<ComposeView>(R.id.cv_history_content).apply {
             setContent {
                 val calendarData by historyViewModel.historyCalendar.observeAsState()
+                val incomeFilter by historyViewModel.incomeFilter.observeAsState(true)
+                val expenditureFilter by historyViewModel.expenditureFilter.observeAsState(true)
 
                 AccountbookTheme {
                     Column {
+                        HistoryMainFilterButton(
+                            isIncomeChecked = incomeFilter,
+                            isExpenditureChecked = expenditureFilter,
+                            onIncomeButtonPressed = { historyViewModel.filteringIncomeData() },
+                            onExpenditureButtonPressed = { historyViewModel.filteringExpenditureData() },
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                        )
                         calendarData?.forEachIndexed { date, item ->
                             if (item.isNotEmpty())
                                 AccountInfoPerDayItem(
