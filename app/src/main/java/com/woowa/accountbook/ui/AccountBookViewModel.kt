@@ -30,6 +30,7 @@ class AccountBookViewModel @Inject constructor(
 
         this.year = _year
         this.month = _month
+        fetchData()
     }
 
     private val isNull: Boolean = (_year.value == null || _month.value == null)

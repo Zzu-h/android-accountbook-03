@@ -2,6 +2,7 @@ package com.woowa.accountbook.ui.common.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -32,40 +33,40 @@ fun AccountInfoPerDayItem(
     val totIncomeText = "수입 ${StringUtil.getPriceToString(totIncome, false)}"
     val totExpenditureText = "지출 ${StringUtil.getPriceToString(totExpenditure, false)}"
 
-    Column(modifier = modifier.padding(top = 24.dp)) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .fillMaxWidth()
-        ) {
-            Box(
+    LazyColumn(modifier = modifier.padding(top = 24.dp)) {
+        item {
+            Column(
                 modifier = Modifier
-                    .padding(bottom = 8.dp)
+                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
             ) {
-                Text(dateText, modifier = Modifier.align(Alignment.BottomStart), color = titleColor)
-                Row(modifier = Modifier.align(Alignment.BottomEnd)) {
-                    if (totIncome > 0) Text(totIncomeText, color = titleColor)
-                    if (totExpenditure > 0) Text(totExpenditureText, color = titleColor)
-                }
-            }
-
-            LazyColumn(
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-            ) {
-                item(accountList.size) {
-                    accountList.forEach {
-                        AccountInfoItem(it.type, it)
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        dateText,
+                        modifier = Modifier.align(Alignment.BottomStart),
+                        color = titleColor
+                    )
+                    Row(modifier = Modifier.align(Alignment.BottomEnd)) {
+                        if (totIncome > 0) Text(totIncomeText, color = titleColor)
+                        if (totExpenditure > 0) Text(totExpenditureText, color = titleColor)
                     }
                 }
             }
         }
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp),
-            color = MaterialTheme.colors.primary,
-        )
+        items(accountList) { item ->
+            AccountInfoItem(item, modifier = modifier.padding(16.dp))
+        }
+        item {
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp),
+                color = MaterialTheme.colors.primary,
+            )
+        }
     }
 }

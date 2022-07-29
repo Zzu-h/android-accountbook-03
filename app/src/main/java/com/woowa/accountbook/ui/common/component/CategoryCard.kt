@@ -47,7 +47,7 @@ fun CategoryCard(
 fun AccountInfoItemPreview() {
     AccountbookTheme {
         AccountInfoItem(
-            false, Account(
+            Account(
                 content = "Test",
                 payment = "Testing",
                 price = 10020,

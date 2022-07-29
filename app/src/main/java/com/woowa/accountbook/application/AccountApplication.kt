@@ -5,7 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class AccountApplication : Application() {
-    companion object{
+    companion object {
         const val TAG = "TEST-APP"
     }
 }

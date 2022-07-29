@@ -32,8 +32,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun bnvSetting() {
         binding.bnvMain.setOnItemSelectedListener { menu ->
-            when(menu.itemId){
-                R.id.item_history -> changeFragment(HistoryFragment(), getString(R.string.fragment_history), false)
+            when (menu.itemId) {
+                R.id.item_history -> changeFragment(
+                    HistoryFragment(),
+                    getString(R.string.fragment_history),
+                    false
+                )
             }
             true
         }
@@ -43,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_main, fragment, tag)
             .let {
-                if(addBackStack) it.addToBackStack(tag)
+                if (addBackStack) it.addToBackStack(tag)
                 it.commitAllowingStateLoss()
             }
     }
