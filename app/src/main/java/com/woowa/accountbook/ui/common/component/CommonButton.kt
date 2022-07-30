@@ -19,10 +19,10 @@ import com.woowa.accountbook.ui.theme.Yellow
 @Composable
 fun CommonButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = { },
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     text: String,
     isActive: Boolean = true,
+    onClick: () -> Unit = { },
 ) {
     val buttonColor = ButtonDefaults.buttonColors(
         backgroundColor = Yellow,

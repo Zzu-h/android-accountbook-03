@@ -1,6 +1,14 @@
 package com.woowa.accountbook.ui.common
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.woowa.accountbook.data.dto.DBAccountDto
 import com.woowa.accountbook.data.dto.toAccount
@@ -73,6 +81,33 @@ fun AccountInfoPerDayItemPreview() {
             year = 2022,
             month = 7,
             day = 29
+        )
+    }
+}
+
+@Preview
+@Composable
+fun ContentWithTitleItemPreview() {
+    AccountbookTheme {
+        ContentWithTitleItem(title = "Test")
+    }
+}
+
+@Preview
+@Composable
+fun TextFieldWithHintPreview() {
+    AccountbookTheme {
+        TextFieldWithHint(
+            "1234",
+            onValueChange = { str -> },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.primary,
+                fontWeight = FontWeight.Bold
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+            keyboardActions = KeyboardActions(),
         )
     }
 }
