@@ -8,11 +8,11 @@ import com.woowa.accountbook.ui.theme.AccountbookTheme
 
 @Composable
 @Preview
-fun SettingMainItemPreviews (){
+fun SettingMainItemPreviews() {
     AccountbookTheme {
         SettingMainItem(
             "Test",
-            listOf(Category(),Category())
+            listOf(Category(), Category())
         )
     }
 }

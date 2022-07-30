@@ -16,6 +16,7 @@ fun CalendarPreviews() {
         CustomCalendar(year = 2022, month = 7, calendarData = List(31) { Pair(30231, 585959) })
     }
 }
+
 @Preview
 @Composable
 fun CalendarTotTextPreview() {

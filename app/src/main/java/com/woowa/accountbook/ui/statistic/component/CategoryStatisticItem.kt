@@ -1,5 +1,6 @@
 package com.woowa.accountbook.ui.statistic.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.domain.model.CategoryStatisticDto
 import com.woowa.accountbook.ui.common.component.CategoryCard
 import com.woowa.accountbook.ui.common.component.SubDivider
@@ -22,8 +24,12 @@ fun CategoryStatisticItem(
     item: CategoryStatisticDto,
     verticalPadding: Dp = 10.dp,
     horizontalPadding: Dp = 16.dp,
+    onClick: (Category) -> Unit = {}
 ) {
-    Column(Modifier.padding(horizontal = horizontalPadding)) {
+    Column(
+        Modifier
+            .padding(horizontal = horizontalPadding)
+            .clickable(true) { onClick(item.category) }) {
         Row(modifier = Modifier.padding(vertical = verticalPadding)) {
             CategoryCard(category = item.category)
             Text(
