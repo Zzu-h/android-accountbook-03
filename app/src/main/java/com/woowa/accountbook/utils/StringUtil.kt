@@ -21,4 +21,9 @@ object StringUtil {
 
         return str.removeRange(0, 1)
     }
+
+    fun getPercentageFormatString(ratio: Float): String {
+        val data = (ratio * 100f).toInt()
+        return "$data%"
+    }
 }
