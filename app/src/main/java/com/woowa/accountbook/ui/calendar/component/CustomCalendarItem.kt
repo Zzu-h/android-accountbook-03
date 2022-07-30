@@ -52,7 +52,9 @@ fun CustomCalendarItem(
                     fontSize = textSize
                 )
                 if (income != 0 || expenditure != 0) Text(
-                    text = (if (income < expenditure) "-" else "") + StringUtil.getMoneyFormatString((income - expenditure)),
+                    text = (if (income < expenditure) "-" else "") + StringUtil.getMoneyFormatString(
+                        (income - expenditure)
+                    ),
                     color = textColor,
                     fontSize = textSize
                 )
