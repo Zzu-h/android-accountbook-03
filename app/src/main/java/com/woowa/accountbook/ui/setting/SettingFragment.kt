@@ -12,10 +12,13 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
+import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
 import com.woowa.accountbook.ui.setting.component.SettingMainItem
+import com.woowa.accountbook.ui.setting.new.NewCategoryFragment
+import com.woowa.accountbook.ui.setting.new.NewPaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 
 //
@@ -47,24 +50,27 @@ class SettingFragment : Fragment() {
                 AccountbookTheme {
                     Column {
                         SettingMainItem(
-                            title = TagPayment, itemList = listOf(
+                            title = "결제수단", itemList = listOf(
                                 Category(),
                                 Category()
-                            ), categoryCardVisible = false
+                            ), categoryCardVisible = false,
+                            onClickAddButton = { changeFragment("") }
                         )
                         MainDivider()
                         SettingMainItem(
-                            title = TagExpenditure, itemList = listOf(
+                            title = "수입 카테고리", itemList = listOf(
                                 Category(),
                                 Category()
-                            )
+                            ),
+                            onClickAddButton = { changeFragment(AccountType.INCOME) }
                         )
                         MainDivider()
                         SettingMainItem(
-                            title = TagIncome, itemList = listOf(
+                            title = "지출 카테고리", itemList = listOf(
                                 Category(),
                                 Category()
-                            )
+                            ),
+                            onClickAddButton = { changeFragment(AccountType.EXPENDITURE) }
                         )
                         MainDivider()
                     }
@@ -74,9 +80,19 @@ class SettingFragment : Fragment() {
         }
     }
 
-    companion object {
-        const val TagPayment = "결제수단"
-        const val TagExpenditure = "지출 카테고리"
-        const val TagIncome = "수입 카테고리"
+    private fun changeFragment(tag: String) {
+        val fragment = when (tag) {
+            AccountType.INCOME, AccountType.EXPENDITURE -> NewCategoryFragment()
+            else -> NewPaymentFragment()
+        }.apply {
+            arguments = Bundle().apply {
+                putString("TAG", tag)
+            }
+        }
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fcv_main, fragment)
+            .addToBackStack(tag)
+            .commit()
     }
 }

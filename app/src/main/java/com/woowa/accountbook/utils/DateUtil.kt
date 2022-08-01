@@ -12,7 +12,13 @@ object DateUtil {
         getDayOfWeekKR(calendar.get(Calendar.DAY_OF_WEEK))
     }
 
-    fun getDateToString() {}
+    fun getDateToString(
+        year: Int = currentYear,
+        month: Int = currentMonth,
+        day: Int = currentDay
+    ): String {
+        return "${year}. ${month}. $day ${getDayOfWeek(year, month, day)}"
+    }
 
     fun getDayOfWeekCode(year: Int, month: Int, day: Int): Int {
         val date = Calendar.getInstance()

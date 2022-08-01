@@ -14,12 +14,14 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
+import com.woowa.accountbook.ui.history.manage.NewHistoryFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.utils.DateUtil
 
@@ -28,11 +30,14 @@ class HistoryFragment : Fragment() {
     private val accountBookViewModel: AccountBookViewModel by activityViewModels()
     private val historyViewModel: HistoryViewModel by viewModels()
 
+    private lateinit var floatingButton: FloatingActionButton
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val rootView: View = inflater.inflate(R.layout.fragment_history, container, false)
+        floatingButton = rootView.findViewById(R.id.fab_add_account)
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
             setContent {
@@ -95,7 +100,13 @@ class HistoryFragment : Fragment() {
     }
 
     private fun buttonSetting() {
-
+        floatingButton.setOnClickListener {
+            parentFragmentManager
+                .beginTransaction()
+                .replace(R.id.fcv_main, NewHistoryFragment())
+                .addToBackStack("NewHistory")
+                .commit()
+        }
     }
 
     private fun observeData() {

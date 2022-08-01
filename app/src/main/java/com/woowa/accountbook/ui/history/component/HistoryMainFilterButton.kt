@@ -16,6 +16,7 @@ fun HistoryMainFilterButton(
     isIncomeChecked: Boolean = true,
     isExpenditureChecked: Boolean = true,
     isActive: Boolean = true,
+    itemVisible: Boolean = true,
     onIncomeButtonPressed: () -> Unit = { },
     onExpenditureButtonPressed: () -> Unit = { },
     modifier: Modifier = Modifier,
@@ -33,12 +34,14 @@ fun HistoryMainFilterButton(
         HistoryIncomeFilterButton(
             isChecked = isIncomeChecked,
             onButtonPressed = onIncomeButtonPressed,
-            isActive = isActive
+            isActive = isActive,
+            itemVisible = itemVisible
         )
         HistoryExpenditureFilterButton(
             isChecked = isExpenditureChecked,
             onButtonPressed = onExpenditureButtonPressed,
-            isActive = isActive
+            isActive = isActive,
+            itemVisible = itemVisible
         )
     }
 }

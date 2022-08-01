@@ -1,8 +1,8 @@
 package com.woowa.accountbook.domain.model
 
 object AccountType {
-    const val INCOME = true
-    const val EXPENDITURE = false
+    const val INCOME = "INCOME"
+    const val EXPENDITURE = "EXPENDITURE"
 }
 
 data class Account(
@@ -13,5 +13,5 @@ data class Account(
     val year: Int,
     val month: Int,
     val day: Int,
-    val type: Boolean
+    val type: String
 )

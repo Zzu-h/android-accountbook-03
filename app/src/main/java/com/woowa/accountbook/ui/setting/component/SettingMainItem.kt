@@ -27,7 +27,7 @@ import com.woowa.accountbook.ui.theme.Typography
 fun SettingMainItem(
     title: String,
     itemList: List<Category>,
-    categoryCardVisible: Boolean = false,
+    categoryCardVisible: Boolean = true,
     onClickAddButton: () -> Unit = { },
     onClickItem: (Category) -> Unit = { },
     horizontalPadding: Dp = 16.dp,
