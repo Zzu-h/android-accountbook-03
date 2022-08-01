@@ -24,10 +24,7 @@ import com.woowa.accountbook.ui.theme.*
 
 class NewCategoryFragment : Fragment() {
 
-    private val categoryType by lazy {
-        // TODO 카테고리 명을 받아올 예정
-        AccountType.INCOME
-    }
+    private val categoryType by lazy { requireArguments().getString("TAG") }
 
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreateView(
@@ -37,9 +34,9 @@ class NewCategoryFragment : Fragment() {
         val rootView: View = inflater.inflate(R.layout.fragment_new_category, container, false)
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
-            setContent { AccountbookTheme { SubAppBar(title = "카테고리 추가") } }
+            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == AccountType.INCOME) "수입" else "지출" + " 카테고리 추가") } }
         }
-        rootView.findViewById<ComposeView>(R.id.cv_setting_content).apply {
+        rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
@@ -69,7 +66,7 @@ class NewCategoryFragment : Fragment() {
                                     top = 24.dp,
                                     bottom = 10.dp
                                 ),
-                                color = MaterialTheme.colors.primaryVariant
+                                color = Purple200
                             )
                             SubDivider()
                         }

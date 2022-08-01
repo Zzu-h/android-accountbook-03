@@ -33,7 +33,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/cv_history_content"
+        android:id="@+id/cv_new_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="@string/fragment_history"

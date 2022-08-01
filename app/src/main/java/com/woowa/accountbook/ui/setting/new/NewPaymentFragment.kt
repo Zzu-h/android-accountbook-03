@@ -38,7 +38,7 @@ class NewPaymentFragment : Fragment() {
                 AccountbookTheme { SubAppBar(title = "결제 수단 추가하기") }
             }
         }
-        rootView.findViewById<ComposeView>(R.id.cv_setting_content).apply {
+        rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {

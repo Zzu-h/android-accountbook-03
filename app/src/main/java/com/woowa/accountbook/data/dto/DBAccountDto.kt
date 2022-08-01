@@ -9,7 +9,7 @@ data class DBAccountDto(
     val year: Int = 2022,
     val month: Int = 7,
     val day: Int = 29,
-    val type: Boolean
+    val type: String
 )
 
 fun DBAccountDto.toAccount(): Account {
