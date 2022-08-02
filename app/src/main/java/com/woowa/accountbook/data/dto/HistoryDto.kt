@@ -6,7 +6,7 @@ import com.woowa.accountbook.domain.model.Account
 data class HistoryDto(
     val id: Int,
     val price: Int,
-    val payment: PaymentDto?,
+    val payment: PaymentDto,
     val category: CategoryDto,
     val content: String?,
     val year: Int = 2022,

@@ -14,7 +14,7 @@ fun CategoryDto.toDBCategory(): DBCategory {
     return DBCategory(
         id = id,
         title = title,
-        color = color,
+        color = color.value.toString(),
         type = type
     )
 }

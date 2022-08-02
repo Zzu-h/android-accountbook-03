@@ -1,8 +1,11 @@
 package com.woowa.accountbook.data.local.dao
 
 import android.content.ContentValues
+import androidx.core.database.getStringOrNull
 import com.woowa.accountbook.data.local.*
+import com.woowa.accountbook.data.local.entity.DBCategory
 import com.woowa.accountbook.data.local.entity.DBHistory
+import com.woowa.accountbook.data.local.entity.DBPayment
 import javax.inject.Inject
 
 class HistoryDao @Inject constructor(private val databaseHelper: DatabaseHelper) {
@@ -10,6 +13,7 @@ class HistoryDao @Inject constructor(private val databaseHelper: DatabaseHelper)
     fun getAllHistoryByMonth(filter: String, y: Int, m: Int): List<DBHistory> {
 
         val historyList = mutableListOf<DBHistory>()
+
         databaseHelper.readableDatabase.use { db ->
             val sql = """
                WITH TEMP_TABLE AS(
@@ -27,51 +31,66 @@ class HistoryDao @Inject constructor(private val databaseHelper: DatabaseHelper)
 
             return cursor.use {
                 while (it.moveToNext()) {
-                    val id = it.getInt(0)
-                    val price = it.getInt(1)
-                    val content = it.getString(4)
+                    val id = it.getInt(8)
+                    val price = it.getInt(0)
+                    val type = it.getString(2)
+                    val content = it.getStringOrNull(3)
                     val year = it.getInt(5)
                     val month = it.getInt(6)
                     val day = it.getInt(7)
-                    val categoryIdPK = it.getInt(8)
-                    val isIncome = it.getInt(9)
-                    val categoryName = it.getString(10)
-                    val color = it.getString(11)
 
-                    /*val history = DBHistory(
+                    val categoryId = it.getInt(12)
+                    val categoryName = it.getString(9)
+                    val categoryColor = it.getString(10)
+
+                    val paymentName = it.getString(13)
+                    val paymentId = it.getInt(14)
+
+                    val history = DBHistory(
                         id = id,
                         price = price,
+                        type = type,
                         content = content,
                         year = year,
                         month = month,
                         day = day,
                         category = DBCategory(
-                            id = categoryIdPK,
-                            type = isIncome,
+                            id = categoryId,
+                            type = type,
                             title = categoryName,
-                            color = color
+                            color = categoryColor
                         ),
+                        payment = DBPayment(
+                            id = paymentId,
+                            name = paymentName,
+                            type = type
+                        )
                     )
-                    historyList.add(history)*/
+                    historyList.add(history)
                 }
                 historyList
             }
         }
     }
 
-    fun addHistory(newHistory: DBHistory) {
-        databaseHelper.writableDatabase.use { database ->
-            val contentValues = ContentValues().apply {
-                put(HISTORY_PRICE, newHistory.price)
-                put(HISTORY_CATEGORY_ID, newHistory.category.id)
-                put(HISTORY_CONTENT, newHistory.content)
-                put(HISTORY_TYPE, newHistory.type)
-                put(HISTORY_PAYMENT_ID, newHistory.payment?.id)
-                put(HISTORY_YEAR, newHistory.year)
-                put(HISTORY_MONTH, newHistory.month)
-                put(HISTORY_DAY, newHistory.day)
+    fun addHistory(newHistory: DBHistory): Boolean {
+        return try {
+            databaseHelper.writableDatabase.use { database ->
+                val contentValues = ContentValues().apply {
+                    put(HISTORY_PRICE, newHistory.price)
+                    put(HISTORY_CATEGORY_ID, newHistory.category.id)
+                    put(HISTORY_CONTENT, newHistory.content)
+                    put(HISTORY_TYPE, newHistory.type)
+                    put(HISTORY_PAYMENT_ID, newHistory.payment.id)
+                    put(HISTORY_YEAR, newHistory.year)
+                    put(HISTORY_MONTH, newHistory.month)
+                    put(HISTORY_DAY, newHistory.day)
+                }
+                database.insert(TABLE_HISTORY, null, contentValues)
             }
-            database.insert(TABLE_HISTORY, null, contentValues)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }
