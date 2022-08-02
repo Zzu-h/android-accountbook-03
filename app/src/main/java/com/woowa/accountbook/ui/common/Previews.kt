@@ -50,9 +50,9 @@ fun CategoryCardPreview() {
 @Composable
 fun AccountInfoPreview() {
     AccountbookTheme {
-       /* AccountInfoItem(
-            account = HistoryDto(1234, "hi", "content", type = TypeFilter.INCOME).toAccount(),
-        )*/
+        /* AccountInfoItem(
+             account = HistoryDto(1234, "hi", "content", type = TypeFilter.INCOME).toAccount(),
+         )*/
     }
 }
 
