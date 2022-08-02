@@ -110,7 +110,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun observeData() {
-        accountBookViewModel.totalList.observe(this.viewLifecycleOwner) { data ->
+        accountBookViewModel.totalHistoryList.observe(this.viewLifecycleOwner) { data ->
             historyViewModel.setTotalData(data)
         }
         accountBookViewModel.month.observe(this.viewLifecycleOwner) { month ->

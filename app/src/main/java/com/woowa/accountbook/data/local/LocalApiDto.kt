@@ -42,8 +42,6 @@ class LocalApiDto @Inject constructor(
         categoryDao.updateCategory(newCategory.toDBCategory())
 
     fun getAllPayment(
-        year: Int = DateUtil.currentYear,
-        month: Int = DateUtil.currentMonth,
         filter: String = TypeFilter.ALL,
     ): List<PaymentDto> =
         paymentDao.getAllPayment(filter)

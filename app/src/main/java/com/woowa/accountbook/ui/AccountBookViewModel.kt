@@ -2,6 +2,8 @@ package com.woowa.accountbook.ui
 
 import androidx.lifecycle.*
 import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.domain.repository.AccountBookRepository
 import com.woowa.accountbook.utils.DateUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,15 +16,19 @@ class AccountBookViewModel @Inject constructor(
     private val accountBookRepository: AccountBookRepository
 ) : ViewModel() {
 
-    private var _year: MutableLiveData<Int>
-    private var _month: MutableLiveData<Int>
-
-    private var _totalList = MutableStateFlow<List<Account>>(emptyList())
+    private val _year: MutableLiveData<Int>
+    private val _month: MutableLiveData<Int>
 
     val year: LiveData<Int>
     val month: LiveData<Int>
 
-    val totalList: LiveData<List<Account>> = _totalList.asLiveData()
+    private val _totalHistoryList = MutableStateFlow<List<Account>>(emptyList())
+    private val _totalCategoryList = MutableStateFlow<List<Category>>(emptyList())
+    private val _totalPaymentList = MutableStateFlow<List<Payment>>(emptyList())
+
+    val totalHistoryList: LiveData<List<Account>> = _totalHistoryList.asLiveData()
+    val totalCategoryList: LiveData<List<Category>> = _totalCategoryList.asLiveData()
+    val totalPaymentList: LiveData<List<Payment>> = _totalPaymentList.asLiveData()
 
     init {
         this._year = MutableLiveData(DateUtil.currentYear)
@@ -30,7 +36,8 @@ class AccountBookViewModel @Inject constructor(
 
         this.year = _year
         this.month = _month
-        fetchData()
+        fetchHistoryList()
+        fetchCategoryList()
     }
 
     private val isNull: Boolean = (_year.value == null || _month.value == null)
@@ -38,20 +45,36 @@ class AccountBookViewModel @Inject constructor(
     fun plusMonth() {
         if (isNull) return
         adjustYearAndMonth(_year.value!!, _month.value!!.plus(1))
-        fetchData()
+        fetchHistoryList()
     }
 
     fun minusMonth() {
         if (isNull) return
         adjustYearAndMonth(_year.value!!, _month.value!!.minus(1))
-        fetchData()
+        fetchHistoryList()
     }
 
-    private fun fetchData() {
+    private fun fetchHistoryList() {
         if (isNull) return
         viewModelScope.launch {
             accountBookRepository.getAllHistory(_year.value!!, _month.value!!)
-                .onSuccess { _totalList.emit(it) }
+                .onSuccess { _totalHistoryList.emit(it) }
+                .onFailure { it.printStackTrace() }
+        }
+    }
+
+    private fun fetchCategoryList() {
+        viewModelScope.launch {
+            accountBookRepository.getAllCategory()
+                .onSuccess { _totalCategoryList.emit(it) }
+                .onFailure { it.printStackTrace() }
+        }
+    }
+
+    private fun fetchPaymentList() {
+        viewModelScope.launch {
+            accountBookRepository.getAllPayment()
+                .onSuccess { _totalPaymentList.emit(it) }
                 .onFailure { it.printStackTrace() }
         }
     }
