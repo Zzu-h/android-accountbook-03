@@ -88,4 +88,26 @@ class CalendarFragment : Fragment() {
             return rootView
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        observeData()
+    }
+
+    private fun observeData() {
+        accountBookViewModel.totalHistoryList.observe(this.viewLifecycleOwner) { data ->
+            calendarViewModel.setTotalData(data)
+        }
+        accountBookViewModel.month.observe(this.viewLifecycleOwner) { month ->
+            calendarViewModel.year = accountBookViewModel.year.value ?: 2022
+            calendarViewModel.month = month
+            val createTitle = "${calendarViewModel.year}년 ${month}월"
+
+            calendarViewModel.historyTitle.value = createTitle
+        }
+    }
 }

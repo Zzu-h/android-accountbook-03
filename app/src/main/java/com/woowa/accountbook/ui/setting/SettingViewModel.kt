@@ -2,13 +2,13 @@ package com.woowa.accountbook.ui.setting
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.utils.TypeFilter
 
 class SettingViewModel : ViewModel() {
     val maxDate = 32
 
-    val historyCalendar = MutableLiveData<List<MutableList<Account>>>()
+    val historyCalendar = MutableLiveData<List<MutableList<History>>>()
     val historyTitle = MutableLiveData("hihi")
 
     val incomeFilter = MutableLiveData(true)
@@ -20,10 +20,10 @@ class SettingViewModel : ViewModel() {
     var year = 2022
     var month = 7
 
-    fun setTotalData(totList: List<Account>) {
+    fun setTotalData(totList: List<History>) {
         totIncome = 0
         totExpenditure = 0
-        val list = List<MutableList<Account>>(maxDate) { mutableListOf() }
+        val list = List<MutableList<History>>(maxDate) { mutableListOf() }
         totList.forEach {
             list[it.day].add(it)
             if (it.type == TypeFilter.INCOME) totIncome += it.price

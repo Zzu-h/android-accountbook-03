@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.StringUtil
 import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun AccountInfoPerDayItem(
-    accountList: List<Account>,
+    accountList: List<History>,
     year: Int,
     month: Int,
     day: Int,

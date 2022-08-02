@@ -1,7 +1,7 @@
 package com.woowa.accountbook.ui
 
 import androidx.lifecycle.*
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.domain.repository.AccountBookRepository
@@ -22,11 +22,11 @@ class AccountBookViewModel @Inject constructor(
     val year: LiveData<Int>
     val month: LiveData<Int>
 
-    private val _totalHistoryList = MutableStateFlow<List<Account>>(emptyList())
+    private val _totalHistoryList = MutableStateFlow<List<History>>(emptyList())
     private val _totalCategoryList = MutableStateFlow<List<Category>>(emptyList())
     private val _totalPaymentList = MutableStateFlow<List<Payment>>(emptyList())
 
-    val totalHistoryList: LiveData<List<Account>> = _totalHistoryList.asLiveData()
+    val totalHistoryList: LiveData<List<History>> = _totalHistoryList.asLiveData()
     val totalCategoryList: LiveData<List<Category>> = _totalCategoryList.asLiveData()
     val totalPaymentList: LiveData<List<Payment>> = _totalPaymentList.asLiveData()
 
