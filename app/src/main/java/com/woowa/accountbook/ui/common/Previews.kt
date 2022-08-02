@@ -10,9 +10,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import com.woowa.accountbook.data.dto.DBAccountDto
-import com.woowa.accountbook.data.dto.toAccount
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.common.component.*
 import com.woowa.accountbook.ui.theme.AccountbookTheme
@@ -53,9 +50,9 @@ fun CategoryCardPreview() {
 @Composable
 fun AccountInfoPreview() {
     AccountbookTheme {
-        AccountInfoItem(
-            account = DBAccountDto(1234, "hi", "content", type = AccountType.INCOME).toAccount(),
-        )
+       /* AccountInfoItem(
+            account = HistoryDto(1234, "hi", "content", type = TypeFilter.INCOME).toAccount(),
+        )*/
     }
 }
 
@@ -65,18 +62,18 @@ fun AccountInfoPerDayItemPreview() {
     AccountbookTheme {
         AccountInfoPerDayItem(
             accountList = listOf(
-                DBAccountDto(
+                /*HistoryDto(
                     1234,
                     "hi",
                     "content",
-                    type = AccountType.INCOME
+                    type = TypeFilter.INCOME
                 ).toAccount(),
-                DBAccountDto(
+                HistoryDto(
                     1234,
                     "hi",
                     "content",
-                    type = AccountType.INCOME
-                ).toAccount()
+                    type = TypeFilter.INCOME
+                ).toAccount()*/
             ),
             year = 2022,
             month = 7,

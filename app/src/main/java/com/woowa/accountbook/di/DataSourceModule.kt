@@ -1,6 +1,7 @@
 package com.woowa.accountbook.di
 
 import com.woowa.accountbook.data.datasource.AccountBookDataSource
+import com.woowa.accountbook.data.local.LocalApiDto
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideAccountBookDataSource(): AccountBookDataSource {
-        return AccountBookDataSource()
+    fun provideAccountBookDataSource(localApiDto: LocalApiDto): AccountBookDataSource {
+        return AccountBookDataSource(localApiDto)
     }
 }

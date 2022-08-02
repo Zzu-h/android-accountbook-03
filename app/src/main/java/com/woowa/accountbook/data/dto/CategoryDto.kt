@@ -1,0 +1,20 @@
+package com.woowa.accountbook.data.dto
+
+import androidx.compose.ui.graphics.Color
+import com.woowa.accountbook.data.local.entity.DBCategory
+
+data class CategoryDto(
+    val id: Int,
+    val title: String,
+    val color: Color,
+    val type: String,
+)
+
+fun CategoryDto.toDBCategory(): DBCategory {
+    return DBCategory(
+        id = id,
+        title = title,
+        color = color,
+        type = type
+    )
+}
