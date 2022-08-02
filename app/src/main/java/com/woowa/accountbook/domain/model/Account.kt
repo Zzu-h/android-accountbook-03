@@ -1,11 +1,7 @@
 package com.woowa.accountbook.domain.model
 
-object AccountType {
-    const val INCOME = "INCOME"
-    const val EXPENDITURE = "EXPENDITURE"
-}
-
 data class Account(
+    val id: Int = -1,
     val content: String?,
     val payment: String,
     val category: Category = Category(),

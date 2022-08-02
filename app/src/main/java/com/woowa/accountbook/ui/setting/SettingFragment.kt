@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
@@ -20,6 +19,7 @@ import com.woowa.accountbook.ui.setting.component.SettingMainItem
 import com.woowa.accountbook.ui.setting.new.NewCategoryFragment
 import com.woowa.accountbook.ui.setting.new.NewPaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
+import com.woowa.accountbook.utils.TypeFilter
 
 //
 class SettingFragment : Fragment() {
@@ -62,7 +62,7 @@ class SettingFragment : Fragment() {
                                 Category(),
                                 Category()
                             ),
-                            onClickAddButton = { changeFragment(AccountType.INCOME) }
+                            onClickAddButton = { changeFragment(TypeFilter.INCOME) }
                         )
                         MainDivider()
                         SettingMainItem(
@@ -70,7 +70,7 @@ class SettingFragment : Fragment() {
                                 Category(),
                                 Category()
                             ),
-                            onClickAddButton = { changeFragment(AccountType.EXPENDITURE) }
+                            onClickAddButton = { changeFragment(TypeFilter.EXPENDITURE) }
                         )
                         MainDivider()
                     }
@@ -82,7 +82,7 @@ class SettingFragment : Fragment() {
 
     private fun changeFragment(tag: String) {
         val fragment = when (tag) {
-            AccountType.INCOME, AccountType.EXPENDITURE -> NewCategoryFragment()
+            TypeFilter.INCOME, TypeFilter.EXPENDITURE -> NewCategoryFragment()
             else -> NewPaymentFragment()
         }.apply {
             arguments = Bundle().apply {
