@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.domain.model.Account
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.StringUtil
+import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun AccountInfoPerDayItem(
@@ -27,7 +27,7 @@ fun AccountInfoPerDayItem(
     var totIncome = 0
     var totExpenditure = 0
 
-    accountList.forEach { if (it.type == AccountType.INCOME) totIncome += it.price else totExpenditure += it.price }
+    accountList.forEach { if (it.type == TypeFilter.INCOME) totIncome += it.price else totExpenditure += it.price }
 
     val dateText = "${month}월 ${day}일 ${DateUtil.getDayOfWeek(year, month, day)}"
     val totIncomeText = "수입 ${StringUtil.getPriceToString(totIncome, false)}"

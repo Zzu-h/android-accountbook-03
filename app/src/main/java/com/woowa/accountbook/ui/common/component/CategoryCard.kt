@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.domain.model.Account
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Typography
+import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun CategoryCard(
@@ -54,7 +54,7 @@ fun AccountInfoItemPreview() {
                 year = 11,
                 month = 12,
                 day = 12,
-                type = AccountType.INCOME
+                type = TypeFilter.INCOME
             )
         )
     }

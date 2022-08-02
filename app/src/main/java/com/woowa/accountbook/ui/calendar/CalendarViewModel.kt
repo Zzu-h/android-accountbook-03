@@ -3,7 +3,7 @@ package com.woowa.accountbook.ui.calendar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.woowa.accountbook.domain.model.Account
-import com.woowa.accountbook.domain.model.AccountType
+import com.woowa.accountbook.utils.TypeFilter
 
 class CalendarViewModel : ViewModel() {
     val maxDate = 32
@@ -26,8 +26,8 @@ class CalendarViewModel : ViewModel() {
         val list = List<MutableList<Account>>(maxDate) { mutableListOf() }
         totList.forEach {
             list[it.day].add(it)
-            if (it.type == AccountType.INCOME) totIncome += it.price
-            else if (it.type == AccountType.EXPENDITURE) totExpenditure += it.price
+            if (it.type == TypeFilter.INCOME) totIncome += it.price
+            else if (it.type == TypeFilter.EXPENDITURE) totExpenditure += it.price
         }
         historyCalendar.value = list
     }

@@ -15,10 +15,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Account
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.StringUtil
+import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun AccountInfoItem(
@@ -26,13 +26,13 @@ fun AccountInfoItem(
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
-    val priceColor = if (account.type == AccountType.EXPENDITURE) Red else Teal200
+    val priceColor = if (account.type == TypeFilter.EXPENDITURE) Red else Teal200
     val contentColor = MaterialTheme.colors.primary
     val backgroundColor = if (isSelected) Color.White else Color.Transparent
 
     val content: String = account.content ?: " "
     val payment = account.payment
-    val price = StringUtil.getPriceToString(account.price, account.type == AccountType.EXPENDITURE)
+    val price = StringUtil.getPriceToString(account.price, account.type == TypeFilter.EXPENDITURE)
     val category = account.category
 
     Box(modifier = modifier.background(color = backgroundColor)) {

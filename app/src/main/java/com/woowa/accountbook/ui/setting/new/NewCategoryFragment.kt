@@ -17,10 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.model.AccountType
 import com.woowa.accountbook.ui.common.component.*
 import com.woowa.accountbook.ui.setting.new.component.ColorPaletteComponent
 import com.woowa.accountbook.ui.theme.*
+import com.woowa.accountbook.utils.TypeFilter
 
 class NewCategoryFragment : Fragment() {
 
@@ -34,7 +34,7 @@ class NewCategoryFragment : Fragment() {
         val rootView: View = inflater.inflate(R.layout.fragment_new_category, container, false)
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
-            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == AccountType.INCOME) "수입" else "지출" + " 카테고리 추가") } }
+            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == TypeFilter.INCOME) "수입" else "지출" + " 카테고리 추가") } }
         }
         rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {
@@ -71,7 +71,7 @@ class NewCategoryFragment : Fragment() {
                             SubDivider()
                         }
                         ColorPaletteComponent(
-                            if (categoryType == AccountType.INCOME) income else expenditure,
+                            if (categoryType == TypeFilter.INCOME) income else expenditure,
                             modifier = Modifier.padding(16.dp)
                         ) { color ->
 
