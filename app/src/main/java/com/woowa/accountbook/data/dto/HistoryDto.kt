@@ -19,11 +19,12 @@ fun HistoryDto.toAccount(): History {
     return History(
         content = content,
         price = price,
-        payment = "temp",
+        payment = payment.name,
         year = year,
         month = month,
         day = day,
-        type = type
+        type = type,
+        category = category.toCategory()
     )
 }
 
@@ -31,7 +32,7 @@ fun HistoryDto.toDBHistory(): DBHistory {
     return DBHistory(
         id = id,
         price = price,
-        payment = payment?.toDBPayment(),
+        payment = payment.toDBPayment(),
         category = category.toDBCategory(),
         content = content,
         year = year,

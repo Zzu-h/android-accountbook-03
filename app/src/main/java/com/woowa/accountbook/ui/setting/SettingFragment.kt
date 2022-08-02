@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
 import com.woowa.accountbook.ui.setting.component.SettingMainItem
@@ -51,24 +50,24 @@ class SettingFragment : Fragment() {
                     Column {
                         SettingMainItem(
                             title = "결제수단", itemList = listOf(
-                                Category(),
-                                Category()
+                                /*Category(),
+                                Category()*/
                             ), categoryCardVisible = false,
                             onClickAddButton = { changeFragment("") }
                         )
                         MainDivider()
                         SettingMainItem(
                             title = "수입 카테고리", itemList = listOf(
-                                Category(),
-                                Category()
+                                /*Category(),
+                                Category()*/
                             ),
                             onClickAddButton = { changeFragment(TypeFilter.INCOME) }
                         )
                         MainDivider()
                         SettingMainItem(
                             title = "지출 카테고리", itemList = listOf(
-                                Category(),
-                                Category()
+                                /*Category(),
+                                Category()*/
                             ),
                             onClickAddButton = { changeFragment(TypeFilter.EXPENDITURE) }
                         )
