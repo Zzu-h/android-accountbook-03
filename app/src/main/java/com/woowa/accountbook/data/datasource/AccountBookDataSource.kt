@@ -4,8 +4,9 @@ import com.woowa.accountbook.data.dto.CategoryDto
 import com.woowa.accountbook.data.dto.HistoryDto
 import com.woowa.accountbook.data.dto.PaymentDto
 import com.woowa.accountbook.data.local.LocalApiDto
+import javax.inject.Inject
 
-class AccountBookDataSource(private val localApiDto: LocalApiDto) {
+class AccountBookDataSource @Inject constructor(private val localApiDto: LocalApiDto) {
 
     suspend fun getAllHistory(year: Int, month: Int): Result<List<HistoryDto>> {
         return runCatching { localApiDto.getAllHistory(year, month) }

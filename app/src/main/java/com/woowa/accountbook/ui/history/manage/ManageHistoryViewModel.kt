@@ -93,4 +93,14 @@ class ManageHistoryViewModel @Inject constructor(
         _buttonEnabled.value =
             (money != null && money.isNotBlank() && (isIncome || pay != null && pay.isNotBlank()))
     }
+
+    fun addCategory(): Boolean {
+
+        return true
+    }
+
+    fun updateCategory(): Boolean {
+
+        return true
+    }
 }

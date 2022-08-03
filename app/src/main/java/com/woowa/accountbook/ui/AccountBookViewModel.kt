@@ -61,7 +61,7 @@ class AccountBookViewModel @Inject constructor(
         fetchHistoryList()
     }
 
-    private fun fetchHistoryList() {
+    fun fetchHistoryList() {
         if (isNull) return
         viewModelScope.launch {
             accountBookRepository.getAllHistory(_year.value!!, _month.value!!)
@@ -70,7 +70,7 @@ class AccountBookViewModel @Inject constructor(
         }
     }
 
-    private fun fetchCategoryList() {
+    fun fetchCategoryList() {
         viewModelScope.launch {
             accountBookRepository.getAllCategory()
                 .onSuccess { _totalCategoryList.emit(it) }
@@ -78,7 +78,7 @@ class AccountBookViewModel @Inject constructor(
         }
     }
 
-    private fun fetchPaymentList() {
+    fun fetchPaymentList() {
         viewModelScope.launch {
             accountBookRepository.getAllPayment()
                 .onSuccess { _totalPaymentList.emit(it.subList(1, it.size)) }

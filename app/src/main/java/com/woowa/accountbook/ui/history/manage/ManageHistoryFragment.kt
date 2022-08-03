@@ -184,7 +184,18 @@ class ManageHistoryFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 40.dp, horizontal = 16.dp)
-                    ) { CommonButton(text = "등록하기", isActive = buttonEnabled) }
+                    ) {
+                        CommonButton(
+                            text = if (editFlag) "수정하기" else "등록하기",
+                            isActive = buttonEnabled
+                        ) {
+                            val flag =
+                                if (editFlag) manageHistoryViewModel.updateCategory()
+                                else manageHistoryViewModel.addCategory()
+
+                            if (flag) accountBookViewModel.fetchCategoryList()
+                        }
+                    }
                 }
             }
         }

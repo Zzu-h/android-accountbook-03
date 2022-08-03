@@ -1,6 +1,7 @@
 package com.woowa.accountbook.domain.model
 
 import androidx.compose.ui.graphics.Color
+import com.woowa.accountbook.data.dto.CategoryDto
 import java.io.Serializable
 
 data class Category(
@@ -8,4 +9,13 @@ data class Category(
     val title: String,
     val color: Color,
     val type: String,
-) : Serializable
+) : Serializable {
+    fun toCategoryDto(): CategoryDto {
+        return CategoryDto(
+            id = id,
+            title = title,
+            color = color,
+            type = type
+        )
+    }
+}

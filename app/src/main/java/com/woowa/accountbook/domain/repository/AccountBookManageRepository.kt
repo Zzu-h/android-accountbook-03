@@ -6,7 +6,11 @@ import com.woowa.accountbook.domain.model.Payment
 
 interface AccountBookManageRepository {
 
-    suspend fun getAllHistory(year: Int, month: Int): Result<List<History>>
-    suspend fun getAllCategory(): Result<List<Category>>
-    suspend fun getAllPayment(): Result<List<Payment>>
+    suspend fun addPayment(paymentDto: Payment): Result<Boolean>
+    suspend fun updatePayment(newPayment: Payment): Result<Boolean>
+    suspend fun addCategory(categoryDto: Category): Result<Boolean>
+    suspend fun updateCategory(newCategory: Category): Result<Boolean>
+    suspend fun addHistory(historyDto: History): Result<Boolean>
+    suspend fun updateHistory(historyDto: History): Result<Boolean>
+    suspend fun removeHistoryList(historyList: List<History>): Result<Boolean>
 }

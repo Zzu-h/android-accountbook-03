@@ -29,6 +29,17 @@ class LocalApiDto @Inject constructor(
     fun addHistory(historyDto: HistoryDto): Boolean =
         historyDao.addHistory(historyDto.toDBHistory())
 
+    fun updateHistory(historyDto: HistoryDto): Boolean =
+        historyDao.updateHistory(historyDto.toDBHistory())
+
+    fun removeHistoryList(historyDtoList: List<HistoryDto>): Boolean {
+        var flag = true
+        historyDtoList.forEach {
+            if (!historyDao.removeHistory(it.toDBHistory()))
+                flag = false
+        }
+        return flag
+    }
 
     fun getAllCategory(
         filter: String = TypeFilter.ALL,
