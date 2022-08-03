@@ -52,7 +52,14 @@ class ManagePaymentFragment : Fragment() {
         val editFlag = oldPayment != null
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
-            setContent { AccountbookTheme { SubAppBar(title = "결제 수단 " + if (editFlag) "변경하기" else "추가하기") } }
+            setContent {
+                AccountbookTheme {
+                    SubAppBar(
+                        title = "결제 수단 " + if (editFlag) "변경하기" else "추가하기",
+                        onBackIconPressed = { parentFragmentManager.popBackStack() }
+                    )
+                }
+            }
         }
         rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {

@@ -52,7 +52,13 @@ class ManageCategoryFragment : Fragment() {
         val editFlag = oldCategory != null
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
-            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == TypeFilter.INCOME) "수입" else "지출" + " 카테고리 " + if (editFlag) "변경하기" else "추가") } }
+            setContent {
+                AccountbookTheme {
+                    SubAppBar(
+                        title = if (categoryType == TypeFilter.INCOME) "수입" else "지출" + " 카테고리 " + if (editFlag) "변경하기" else "추가",
+                        onBackIconPressed = { parentFragmentManager.popBackStack() })
+                }
+            }
         }
         rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {

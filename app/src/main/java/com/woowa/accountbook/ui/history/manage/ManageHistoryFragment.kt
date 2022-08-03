@@ -34,6 +34,9 @@ import com.woowa.accountbook.ui.common.component.TextFieldWithHint
 import com.woowa.accountbook.ui.history.HistoryFragment.Companion.SharedData
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.component.DropDownComponent
+import com.woowa.accountbook.ui.setting.SettingFragment
+import com.woowa.accountbook.ui.setting.manage.category.ManageCategoryFragment
+import com.woowa.accountbook.ui.setting.manage.payment.ManagePaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.DateUtil
@@ -149,7 +152,8 @@ class ManageHistoryFragment : Fragment() {
                                     list = paymentList.map { it.name },
                                     selectItem = payment
                                 ) {
-                                    manageHistoryViewModel.setPayment(it)
+                                    if (it == "ADD-TAG") changeFragment(TypeFilter.PAYMENT)
+                                    else manageHistoryViewModel.setPayment(it)
                                 }
                             }
                         }
@@ -158,7 +162,8 @@ class ManageHistoryFragment : Fragment() {
                                 list = categoryList.map { it.title },
                                 selectItem = category
                             ) {
-                                manageHistoryViewModel.setCategory(it)
+                                if (it == "ADD-TAG") changeFragment(manageHistoryViewModel.filterType.value!!)
+                                else manageHistoryViewModel.setCategory(it)
                             }
                         }
                         ContentWithTitleItem(title = "내용") {
@@ -184,7 +189,7 @@ class ManageHistoryFragment : Fragment() {
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(vertical = 40.dp, horizontal = 16.dp)
+                            .padding(vertical = 40.dp)
                     ) {
                         CommonButton(
                             text = if (editFlag) "수정하기" else "등록하기",
@@ -206,7 +211,6 @@ class ManageHistoryFragment : Fragment() {
 
     private fun initView() {
         observeData()
-        buttonSetting()
         oldHistory?.let {
             manageHistoryViewModel.setType(it.type)
             manageHistoryViewModel.setDate(Date(it.year, it.month, it.day))
@@ -217,8 +221,20 @@ class ManageHistoryFragment : Fragment() {
         }
     }
 
-    private fun buttonSetting() {
-
+    private fun changeFragment(tag: String) {
+        val fragment = when (tag) {
+            TypeFilter.INCOME, TypeFilter.EXPENDITURE -> ManageCategoryFragment()
+            else -> ManagePaymentFragment()
+        }.apply {
+            arguments = Bundle().apply {
+                putString(SettingFragment.FilterTag, tag)
+            }
+        }
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fcv_main, fragment)
+            .addToBackStack(tag)
+            .commit()
     }
 
     private fun observeData() {
