@@ -118,17 +118,7 @@ class HistoryDao @Inject constructor(private val databaseHelper: DatabaseHelper)
     fun removeHistory(oldHistory: DBHistory): Boolean {
         return try {
             databaseHelper.writableDatabase.use { database ->
-                val contentValues = ContentValues().apply {
-                    put(HISTORY_PRICE, oldHistory.price)
-                    put(HISTORY_CATEGORY_ID, oldHistory.category.id)
-                    put(HISTORY_CONTENT, oldHistory.content)
-                    put(HISTORY_TYPE, oldHistory.type)
-                    put(HISTORY_PAYMENT_ID, oldHistory.payment.id)
-                    put(HISTORY_YEAR, oldHistory.year)
-                    put(HISTORY_MONTH, oldHistory.month)
-                    put(HISTORY_DAY, oldHistory.day)
-                }
-                database.update(TABLE_HISTORY, contentValues, "$HISTORY_ID=${oldHistory.id}", null)
+                database.delete(TABLE_HISTORY, "$HISTORY_ID=${oldHistory.id}", null)
             }
             true
         } catch (e: Exception) {

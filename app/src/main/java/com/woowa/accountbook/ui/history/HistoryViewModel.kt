@@ -3,10 +3,18 @@ package com.woowa.accountbook.ui.history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.woowa.accountbook.domain.model.History
+import com.woowa.accountbook.domain.repository.AccountBookManageRepository
 import com.woowa.accountbook.utils.TypeFilter
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HistoryViewModel : ViewModel() {
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+    private val accountBookManageRepository: AccountBookManageRepository
+) : ViewModel() {
     val maxDate = 32
 
     private var totHistory = emptyList<History>()
@@ -80,6 +88,11 @@ class HistoryViewModel : ViewModel() {
         }
     }
 
+    fun clearTrashList() {
+        trashList.value = emptyList()
+        editFlag.value = false
+    }
+
     private fun addTrashList(history: History) {
         trashList.value?.let {
             val list = it.toMutableList()
@@ -96,5 +109,20 @@ class HistoryViewModel : ViewModel() {
             trashList.value = list.toList()
             editFlag.value = list.isNotEmpty()
         }
+    }
+
+    private val _manageResult = MutableLiveData<Boolean>()
+    val manageResult: LiveData<Boolean> = _manageResult
+
+    fun removeHistoryList() = viewModelScope.launch {
+        accountBookManageRepository.removeHistoryList(historyList = trashList.value!!)
+            .onSuccess {
+                _manageResult.value = it
+                editFlag.value = false
+            }
+            .onFailure {
+                it.printStackTrace()
+                _manageResult.value = false
+            }
     }
 }

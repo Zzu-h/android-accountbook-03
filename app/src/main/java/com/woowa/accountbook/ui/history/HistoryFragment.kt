@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,8 +30,10 @@ import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.ManageHistoryFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     private val accountBookViewModel: AccountBookViewModel by activityViewModels()
@@ -56,8 +59,8 @@ class HistoryFragment : Fragment() {
                         SubAppBar(
                             title = "${trashList.size}개 선택",
                             trashButtonActivate = true,
-                            onBackIconPressed = {},
-                            onTrashIconPressed = {}
+                            onBackIconPressed = { historyViewModel.clearTrashList() },
+                            onTrashIconPressed = { historyViewModel.removeHistoryList() }
                         )
                     else
                         MainAppBar(
@@ -159,6 +162,10 @@ class HistoryFragment : Fragment() {
             historyViewModel.historyTitle.value = createTitle
         }
         historyViewModel.editFlag.observe(this.viewLifecycleOwner) { floatingButton.isGone = it }
+        historyViewModel.manageResult.observe(this@HistoryFragment.viewLifecycleOwner) {
+            if (it) accountBookViewModel.fetchHistoryList()
+            else Toast.makeText(this.requireContext(), "문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeFragment(tag: String, data: Serializable? = null) {
