@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,9 +26,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
-import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
-import com.woowa.accountbook.ui.common.component.MainAppBar
-import com.woowa.accountbook.ui.common.component.SubAppBar
+import com.woowa.accountbook.ui.common.component.*
 import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.ManageHistoryFragment
@@ -41,6 +42,7 @@ class HistoryFragment : Fragment() {
 
     private lateinit var floatingButton: FloatingActionButton
 
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,20 +109,34 @@ class HistoryFragment : Fragment() {
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
                             isActive = !editFlag
                         )
-                        calendarData?.forEachIndexed { date, item ->
-                            if (item.isNotEmpty())
-                                AccountInfoPerDayItem(
-                                    accountList = item,
-                                    trashList = trashList,
-                                    year = historyViewModel.year,
-                                    month = historyViewModel.month,
-                                    day = date,
-                                    onItemClick = {
-                                        if (!editFlag) changeFragment(FragmentTag, it)
-                                        else historyViewModel.branchOffTrash(it)
-                                    },
-                                    onItemLongClick = { historyViewModel.branchOffTrash(it) }
-                                )
+                        LazyColumn {
+                            calendarData?.forEachIndexed { date, it ->
+                                if (it.isNotEmpty()) {
+                                    stickyHeader {
+                                        HistoryHeaderItem(
+                                            accountList = it,
+                                            year = historyViewModel.year,
+                                            month = historyViewModel.month,
+                                            day = date,
+                                        )
+                                    }
+                                    items(it) { item ->
+                                        HistoryInfoItem(
+                                            item,
+                                            isSelected = trashList.contains(item),
+                                            onItemLongClick = { historyViewModel.branchOffTrash(it) },
+                                            onItemClick = {
+                                                if (!editFlag) changeFragment(FragmentTag, it)
+                                                else historyViewModel.branchOffTrash(it)
+                                            }
+                                        )
+                                    }
+                                    item {
+                                        MainDivider()
+                                    }
+                                }
+
+                            }
                         }
                         if (emptyFlag) {
                             Box(modifier = Modifier.fillMaxSize()) {

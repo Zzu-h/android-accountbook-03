@@ -18,7 +18,7 @@ import com.woowa.accountbook.ui.theme.Purple700
 import com.woowa.accountbook.ui.theme.Typography
 
 @Composable
-fun SettingSubItem(
+fun SettingContentItem(
     item: Category,
     categoryCardVisible: Boolean = true,
     onClickItem: (Category) -> Unit = { },

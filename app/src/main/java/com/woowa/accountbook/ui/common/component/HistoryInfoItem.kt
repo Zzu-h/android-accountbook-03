@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +23,7 @@ import com.woowa.accountbook.utils.TypeFilter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AccountInfoItem(
+fun HistoryInfoItem(
     account: History,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
@@ -48,55 +47,55 @@ fun AccountInfoItem(
                 onLongClick = { onItemLongClick(account) },
             )
     ) {
-        Divider(
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopCenter)
-                .height(1.dp),
-            color = MaterialTheme.colors.primaryVariant,
-        )
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(vertical = 8.dp)
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
         ) {
-            if (isSelected)
-                Image(
-                    painter = painterResource(id = R.drawable.ic_selected_24dp),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(16.dp)
-                )
-            Column() {
-                CategoryCard(
-                    category = category,
+            SubDivider()
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(vertical = 8.dp)
+            ) {
+                if (isSelected)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_selected_24dp),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(16.dp)
+                    )
+                Column() {
+                    CategoryCard(
+                        category = category,
+                        modifier = Modifier
+                            .padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = content,
+                        color = contentColor
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(vertical = 8.dp)
+            ) {
+                Text(
+                    text = if (account.type == TypeFilter.INCOME) "" else payment.name,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
+                        .align(Alignment.End),
+                    color = contentColor,
+                    textAlign = TextAlign.End
                 )
                 Text(
-                    text = content,
-                    color = contentColor
+                    text = price,
+                    color = priceColor
                 )
             }
         }
-
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = payment.name, modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .align(Alignment.End),
-                color = contentColor,
-                textAlign = TextAlign.End
-            )
-            Text(
-                text = price,
-                color = priceColor
-            )
-        }
-
     }
 }

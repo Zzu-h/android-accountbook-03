@@ -57,33 +57,6 @@ fun AccountInfoPreview() {
 
 @Preview
 @Composable
-fun AccountInfoPerDayItemPreview() {
-    AccountbookTheme {
-        AccountInfoPerDayItem(
-            accountList = listOf(
-                /*HistoryDto(
-                    1234,
-                    "hi",
-                    "content",
-                    type = TypeFilter.INCOME
-                ).toAccount(),
-                HistoryDto(
-                    1234,
-                    "hi",
-                    "content",
-                    type = TypeFilter.INCOME
-                ).toAccount()*/
-            ),
-            trashList = emptyList(),
-            year = 2022,
-            month = 7,
-            day = 29
-        )
-    }
-}
-
-@Preview
-@Composable
 fun ContentWithTitleItemPreview() {
     AccountbookTheme {
         ContentWithTitleItem(title = "Test")
