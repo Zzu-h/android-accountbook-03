@@ -74,6 +74,7 @@ fun AccountInfoPerDayItemPreview() {
                     type = TypeFilter.INCOME
                 ).toAccount()*/
             ),
+            trashList = emptyList(),
             year = 2022,
             month = 7,
             day = 29

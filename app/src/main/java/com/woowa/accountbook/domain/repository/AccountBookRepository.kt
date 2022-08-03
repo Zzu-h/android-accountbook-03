@@ -1,7 +1,7 @@
 package com.woowa.accountbook.domain.repository
 
-import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Payment
 
 interface AccountBookRepository {

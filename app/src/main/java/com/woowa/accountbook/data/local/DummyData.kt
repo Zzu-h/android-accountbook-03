@@ -1,14 +1,14 @@
 package com.woowa.accountbook.data.local
 
-import com.woowa.accountbook.ui.theme.Red
-import com.woowa.accountbook.ui.theme.Yellow
+import com.woowa.accountbook.ui.theme.Pink3
+import com.woowa.accountbook.ui.theme.Yellow5
 import com.woowa.accountbook.utils.TypeFilter
 
 internal object DummyData {
     val categoryOfIncome =
-        "INSERT INTO $TABLE_CATEGORY ($CATEGORY_NAME, $CATEGORY_COLOR, $CATEGORY_TYPE) VALUES (\"미분류\", \"${Yellow.value}\" ,\"${TypeFilter.INCOME}\")".trim()
+        "INSERT INTO $TABLE_CATEGORY ($CATEGORY_NAME, $CATEGORY_COLOR, $CATEGORY_TYPE) VALUES (\"미분류\", \"${Yellow5.value}\" ,\"${TypeFilter.INCOME}\")".trim()
     val categoryOfExpenditure =
-        "INSERT INTO $TABLE_CATEGORY ($CATEGORY_NAME, $CATEGORY_COLOR, $CATEGORY_TYPE) VALUES (\"미분류\", \"${Red.value}\" ,\"${TypeFilter.EXPENDITURE}\")".trim()
+        "INSERT INTO $TABLE_CATEGORY ($CATEGORY_NAME, $CATEGORY_COLOR, $CATEGORY_TYPE) VALUES (\"미분류\", \"${Pink3.value}\" ,\"${TypeFilter.EXPENDITURE}\")".trim()
 
     val payment =
         "INSERT INTO $TABLE_PAYMENT ($PAYMENT_NAME, $PAYMENT_TYPE) VALUES (\"미분류\", \"${TypeFilter.EXPENDITURE}\")".trim()

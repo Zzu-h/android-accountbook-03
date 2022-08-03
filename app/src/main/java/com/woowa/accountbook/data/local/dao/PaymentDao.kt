@@ -58,7 +58,7 @@ class PaymentDao @Inject constructor(private val databaseHelper: DatabaseHelper)
                     put(HISTORY_TYPE, newPayment.type)
                 }
                 database.update(
-                    TABLE_CATEGORY,
+                    TABLE_PAYMENT,
                     contentValues,
                     "$PAYMENT_ID=${newPayment.id}",
                     null

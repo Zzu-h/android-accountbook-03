@@ -1,14 +1,16 @@
-package com.woowa.accountbook.ui.setting.new
+package com.woowa.accountbook.ui.setting.manage.category
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -16,15 +18,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
+import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.*
-import com.woowa.accountbook.ui.setting.new.component.ColorPaletteComponent
+import com.woowa.accountbook.ui.setting.SettingFragment.Companion.FilterTag
+import com.woowa.accountbook.ui.setting.SettingFragment.Companion.SharedData
+import com.woowa.accountbook.ui.setting.manage.component.ColorPaletteComponent
 import com.woowa.accountbook.ui.theme.*
 import com.woowa.accountbook.utils.TypeFilter
+import dagger.hilt.android.AndroidEntryPoint
 
-class NewCategoryFragment : Fragment() {
+@AndroidEntryPoint
+class ManageCategoryFragment : Fragment() {
 
-    private val categoryType by lazy { requireArguments().getString("TAG") }
+    private val manageCategoryViewModel by viewModels<ManageCategoryViewModel>()
+    private val accountBookViewModel: AccountBookViewModel by activityViewModels()
+
+    private val categoryType by lazy { requireArguments().getString(FilterTag) }
+    private val oldCategory: Category? by lazy {
+        val category = arguments?.getSerializable(SharedData)
+        if (category != null) category as Category else null
+    }
 
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreateView(
@@ -32,18 +49,23 @@ class NewCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val rootView: View = inflater.inflate(R.layout.fragment_new_category, container, false)
+        val editFlag = oldCategory != null
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
-            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == TypeFilter.INCOME) "수입" else "지출" + " 카테고리 추가") } }
+            setContent { AccountbookTheme { SubAppBar(title = if (categoryType == TypeFilter.INCOME) "수입" else "지출" + " 카테고리 " + if (editFlag) "변경하기" else "추가") } }
         }
         rootView.findViewById<ComposeView>(R.id.cv_new_content).apply {
             setContent {
+                val name by manageCategoryViewModel.categoryName.observeAsState("")
+                val color by manageCategoryViewModel.categoryColor.observeAsState(if (categoryType == TypeFilter.INCOME) income.first() else expenditure.first())
+                val buttonActive by manageCategoryViewModel.buttonEnabled.observeAsState(false)
+
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
                         ContentWithTitleItem(title = "이름") {
                             TextFieldWithHint(
-                                "",
-                                onValueChange = { str -> Log.d("Tester", str) },
+                                name,
+                                onValueChange = { manageCategoryViewModel.setCategoryName(it) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
@@ -72,20 +94,43 @@ class NewCategoryFragment : Fragment() {
                         }
                         ColorPaletteComponent(
                             if (categoryType == TypeFilter.INCOME) income else expenditure,
+                            currentColor = color,
                             modifier = Modifier.padding(16.dp)
-                        ) { color ->
-
-                        }
+                        ) { manageCategoryViewModel.setCategoryColor(it) }
                         MainDivider()
                     }
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 40.dp, horizontal = 16.dp)
-                    ) { CommonButton(text = "등록하기") }
+                    ) {
+                        CommonButton(text = "등록하기", isActive = buttonActive) {
+                            if (editFlag) manageCategoryViewModel.updateCategory(
+                                filter = categoryType!!,
+                                oldCategoryId = oldCategory!!.id
+                            )
+                            else manageCategoryViewModel.addCategory(filter = categoryType!!)
+                        }
+                    }
                 }
             }
             return rootView
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        oldCategory?.let {
+            manageCategoryViewModel.setCategoryColor(it.color)
+            manageCategoryViewModel.setCategoryName(it.title)
+        }
+        manageCategoryViewModel.manageResult.observe(this@ManageCategoryFragment.viewLifecycleOwner) {
+            if (it) {
+                accountBookViewModel.fetchCategoryList()
+                parentFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(this.requireContext(), "문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

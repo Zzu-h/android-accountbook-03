@@ -1,7 +1,9 @@
 package com.woowa.accountbook.ui.common.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -20,11 +22,14 @@ import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.StringUtil
 import com.woowa.accountbook.utils.TypeFilter
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AccountInfoItem(
     account: History,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
+    onItemLongClick: (History) -> Unit = {},
+    onItemClick: (History) -> Unit = {}
 ) {
     val priceColor = if (account.type == TypeFilter.EXPENDITURE) Red else Teal200
     val contentColor = MaterialTheme.colors.primary
@@ -35,7 +40,14 @@ fun AccountInfoItem(
     val price = StringUtil.getPriceToString(account.price, account.type == TypeFilter.EXPENDITURE)
     val category = account.category
 
-    Box(modifier = modifier.background(color = backgroundColor)) {
+    Box(
+        modifier = modifier
+            .background(color = backgroundColor)
+            .combinedClickable(
+                onClick = { onItemClick(account) },
+                onLongClick = { onItemLongClick(account) },
+            )
+    ) {
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
@@ -74,7 +86,7 @@ fun AccountInfoItem(
                 .padding(vertical = 8.dp)
         ) {
             Text(
-                text = payment, modifier = Modifier
+                text = payment.name, modifier = Modifier
                     .padding(bottom = 8.dp)
                     .align(Alignment.End),
                 color = contentColor,

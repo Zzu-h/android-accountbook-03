@@ -18,10 +18,13 @@ import com.woowa.accountbook.utils.TypeFilter
 @Composable
 fun AccountInfoPerDayItem(
     accountList: List<History>,
+    trashList: List<History>,
     year: Int,
     month: Int,
     day: Int,
     modifier: Modifier = Modifier,
+    onItemLongClick: (History) -> Unit = {},
+    onItemClick: (History) -> Unit = {}
 ) {
     val titleColor = MaterialTheme.colors.primaryVariant
     var totIncome = 0
@@ -58,7 +61,13 @@ fun AccountInfoPerDayItem(
             }
         }
         items(accountList) { item ->
-            AccountInfoItem(item, modifier = modifier.padding(16.dp))
+            AccountInfoItem(
+                item,
+                modifier = modifier.padding(16.dp),
+                isSelected = trashList.contains(item),
+                onItemLongClick = onItemLongClick,
+                onItemClick = onItemClick
+            )
         }
         item {
             Divider(

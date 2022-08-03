@@ -17,9 +17,10 @@ data class HistoryDto(
 
 fun HistoryDto.toAccount(): History {
     return History(
+        id = id,
         content = content,
         price = price,
-        payment = payment.name,
+        payment = payment.toPayment(),
         year = year,
         month = month,
         day = day,

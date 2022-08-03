@@ -93,4 +93,36 @@ class HistoryDao @Inject constructor(private val databaseHelper: DatabaseHelper)
             false
         }
     }
+
+    fun updateHistory(newHistory: DBHistory): Boolean {
+        return try {
+            databaseHelper.writableDatabase.use { database ->
+                val contentValues = ContentValues().apply {
+                    put(HISTORY_PRICE, newHistory.price)
+                    put(HISTORY_CATEGORY_ID, newHistory.category.id)
+                    put(HISTORY_CONTENT, newHistory.content)
+                    put(HISTORY_TYPE, newHistory.type)
+                    put(HISTORY_PAYMENT_ID, newHistory.payment.id)
+                    put(HISTORY_YEAR, newHistory.year)
+                    put(HISTORY_MONTH, newHistory.month)
+                    put(HISTORY_DAY, newHistory.day)
+                }
+                database.update(TABLE_HISTORY, contentValues, "$HISTORY_ID=${newHistory.id}", null)
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun removeHistory(oldHistory: DBHistory): Boolean {
+        return try {
+            databaseHelper.writableDatabase.use { database ->
+                database.delete(TABLE_HISTORY, "$HISTORY_ID=${oldHistory.id}", null)
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

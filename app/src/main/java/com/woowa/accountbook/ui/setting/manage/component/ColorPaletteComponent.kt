@@ -1,4 +1,4 @@
-package com.woowa.accountbook.ui.setting.new.component
+package com.woowa.accountbook.ui.setting.manage.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -19,16 +19,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ColorPaletteComponent(
     colors: List<Color>,
+    currentColor: Color = colors.first(),
     modifier: Modifier = Modifier,
-    onColorChangeListener: (Color) -> Unit = {}
+    onColorClick: (Color) -> Unit = {}
 ) {
-    var currentColor by remember { mutableStateOf(colors.first()) }
-    onColorChangeListener(currentColor)
-
     val colorSize = 35.dp
 
     LazyVerticalGrid(
-        /*cells = GridCells.Fixed(10),*/
         cells = GridCells.Adaptive(colorSize),
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy((5).dp),
@@ -42,10 +39,7 @@ fun ColorPaletteComponent(
                     .defaultMinSize(minHeight = colorSize - (4).dp)
                     .padding(if (currentColor == it) 0.dp else 5.dp)
                     .background(it)
-                    .clickable(true) {
-                        onColorChangeListener(it)
-                        currentColor = it
-                    }
+                    .clickable(true) { onColorClick(it) }
             )
         }
     }

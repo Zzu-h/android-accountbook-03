@@ -14,15 +14,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
 import com.woowa.accountbook.ui.setting.component.SettingMainItem
-import com.woowa.accountbook.ui.setting.new.NewCategoryFragment
-import com.woowa.accountbook.ui.setting.new.NewPaymentFragment
+import com.woowa.accountbook.ui.setting.manage.category.ManageCategoryFragment
+import com.woowa.accountbook.ui.setting.manage.payment.ManagePaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.TypeFilter
+import java.io.Serializable
 
 class SettingFragment : Fragment() {
 
@@ -58,18 +60,26 @@ class SettingFragment : Fragment() {
                     Column {
                         SettingMainItem(
                             title = "결제수단", itemList = paymentList.map {
-                                Category(0, it.name, Purple200, TypeFilter.ALL)
+                                Category(it.id, it.name, Purple200, TypeFilter.PAYMENT)
                             }, categoryCardVisible = false,
-                            onClickAddButton = { changeFragment("") }
+                            onClickItem = {
+                                changeFragment(
+                                    TypeFilter.PAYMENT,
+                                    Payment(it.id, it.title)
+                                )
+                            },
+                            onClickAddButton = { changeFragment(TypeFilter.PAYMENT) }
                         )
                         MainDivider()
                         SettingMainItem(
                             title = "수입 카테고리", itemList = incomeList,
+                            onClickItem = { changeFragment(TypeFilter.INCOME, it) },
                             onClickAddButton = { changeFragment(TypeFilter.INCOME) }
                         )
                         MainDivider()
                         SettingMainItem(
                             title = "지출 카테고리", itemList = expenditureList,
+                            onClickItem = { changeFragment(TypeFilter.EXPENDITURE, it) },
                             onClickAddButton = { changeFragment(TypeFilter.EXPENDITURE) }
                         )
                         MainDivider()
@@ -98,13 +108,14 @@ class SettingFragment : Fragment() {
         }
     }
 
-    private fun changeFragment(tag: String) {
+    private fun changeFragment(tag: String, data: Serializable? = null) {
         val fragment = when (tag) {
-            TypeFilter.INCOME, TypeFilter.EXPENDITURE -> NewCategoryFragment()
-            else -> NewPaymentFragment()
+            TypeFilter.INCOME, TypeFilter.EXPENDITURE -> ManageCategoryFragment()
+            else -> ManagePaymentFragment()
         }.apply {
             arguments = Bundle().apply {
-                putString("TAG", tag)
+                putString(FilterTag, tag)
+                putSerializable(SharedData, data)
             }
         }
         parentFragmentManager
@@ -112,5 +123,10 @@ class SettingFragment : Fragment() {
             .replace(R.id.fcv_main, fragment)
             .addToBackStack(tag)
             .commit()
+    }
+
+    companion object {
+        const val FilterTag = "FilterTag"
+        const val SharedData = "SharedData"
     }
 }

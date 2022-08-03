@@ -21,27 +21,30 @@ import com.woowa.accountbook.ui.theme.Purple700
 @Composable
 fun DropDownComponent(
     list: List<String>,
+    selectItem: String? = null,
     onItemClick: (String) -> Unit = {}
 ) {
-    val text = remember { mutableStateOf("선택하세요") }
+    val emptyFlag = selectItem == null || selectItem.isBlank()
+    val noSelectComment = "선택하세요"
+    var text = if (!emptyFlag) selectItem!! else noSelectComment
     val isOpen = remember { mutableStateOf(false) }
-    val textColor = remember { mutableStateOf(Purple200) }
+    var textColor = if (!emptyFlag) Purple700 else Purple200
     val openCloseOfDropDownList: (Boolean) -> Unit = {
         isOpen.value = it
     }
     val userSelectedString: (String) -> Unit = {
-        text.value = it
+        text = it
         onItemClick(it)
         isOpen.value = isOpen.value.not()
-        textColor.value = Purple700
+        textColor = Purple700
     }
     Box() {
         Column {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = text.value,
+                    text = text,
                     modifier = Modifier.align(Alignment.CenterStart),
-                    color = textColor.value,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
                 Icon(

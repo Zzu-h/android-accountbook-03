@@ -31,7 +31,6 @@ import com.woowa.accountbook.ui.statistic.component.CategoryStatisticItem
 import com.woowa.accountbook.ui.statistic.component.GraphComponent
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Red
-import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.StringUtil
 
 class StatisticFragment : Fragment() {
@@ -55,9 +54,14 @@ class StatisticFragment : Fragment() {
                         onNextIconPressed = { accountBookViewModel.plusMonth() },
                         onPrevIconPressed = { accountBookViewModel.minusMonth() },
                         onTitlePressed = {
-                            MonthYearPickerDialog(DateUtil.currentYear, DateUtil.currentMonth).show(
+                            MonthYearPickerDialog(
+                                statisticViewModel.year,
+                                statisticViewModel.month
+                            ).setListener { _, y, m, d ->
+                                accountBookViewModel.setCalendar(y, m)
+                            }.show(
                                 parentFragmentManager,
-                                getString(R.string.fragment_statistic)
+                                getString(R.string.fragment_calendar)
                             )
                         }
                     )
