@@ -22,6 +22,8 @@ fun AccountInfoPerDayItem(
     month: Int,
     day: Int,
     modifier: Modifier = Modifier,
+    onItemLongClick: (History) -> Unit = {},
+    onItemClick: (History) -> Unit = {}
 ) {
     val titleColor = MaterialTheme.colors.primaryVariant
     var totIncome = 0
@@ -58,7 +60,12 @@ fun AccountInfoPerDayItem(
             }
         }
         items(accountList) { item ->
-            AccountInfoItem(item, modifier = modifier.padding(16.dp))
+            AccountInfoItem(
+                item,
+                modifier = modifier.padding(16.dp),
+                onItemLongClick = onItemLongClick,
+                onItemClick = onItemClick
+            )
         }
         item {
             Divider(

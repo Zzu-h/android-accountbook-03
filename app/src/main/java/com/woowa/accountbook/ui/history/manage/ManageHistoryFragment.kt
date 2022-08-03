@@ -24,11 +24,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Date
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.CommonButton
 import com.woowa.accountbook.ui.common.component.ContentWithTitleItem
 import com.woowa.accountbook.ui.common.component.SubAppBar
 import com.woowa.accountbook.ui.common.component.TextFieldWithHint
+import com.woowa.accountbook.ui.history.HistoryFragment.Companion.SharedData
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.component.DropDownComponent
 import com.woowa.accountbook.ui.theme.AccountbookTheme
@@ -38,14 +40,19 @@ import com.woowa.accountbook.utils.TypeFilter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewHistoryFragment : Fragment() {
+class ManageHistoryFragment : Fragment() {
 
     private val accountBookViewModel: AccountBookViewModel by activityViewModels()
-    private val newHistoryViewModel: NewHistoryViewModel by viewModels()
+    private val manageHistoryViewModel: ManageHistoryViewModel by viewModels()
 
     private lateinit var cvAppBar: ComposeView
     private lateinit var cvContent: ComposeView
     private lateinit var datePickerDialog: DatePickerDialog
+
+    private val oldHistory: History? by lazy {
+        val history = arguments?.getSerializable(SharedData)
+        if (history != null) history as History else null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +60,7 @@ class NewHistoryFragment : Fragment() {
     ): View {
         DatePickerDialog(
             requireContext(),
-            { _, y, m, d -> newHistoryViewModel.setDate(Date(y, m, d)) },
+            { _, y, m, d -> manageHistoryViewModel.setDate(Date(y, m, d)) },
             DateUtil.currentYear,
             DateUtil.currentMonth,
             DateUtil.currentDay
@@ -68,8 +75,11 @@ class NewHistoryFragment : Fragment() {
     }
 
     private fun drawView() {
+        val editFlag = oldHistory != null
         cvAppBar.setContent {
-            val title = "내역 등록"
+            val title = if (!editFlag) "내역 등록" else
+                (if (oldHistory!!.type == TypeFilter.INCOME) "수입" else "지출") + " 수정하기"
+
             AccountbookTheme() {
                 SubAppBar(
                     title = title,
@@ -78,18 +88,18 @@ class NewHistoryFragment : Fragment() {
             }
         }
         cvContent.setContent {
-            val filter by newHistoryViewModel.filterType.observeAsState(TypeFilter.EXPENDITURE)
-            val paymentList by newHistoryViewModel.paymentList.observeAsState(emptyList())
-            val categoryList by newHistoryViewModel.categoryList.observeAsState(emptyList())
+            val filter by manageHistoryViewModel.filterType.observeAsState(TypeFilter.EXPENDITURE)
+            val paymentList by manageHistoryViewModel.paymentList.observeAsState(emptyList())
+            val categoryList by manageHistoryViewModel.categoryList.observeAsState(emptyList())
 
-            val date by newHistoryViewModel.date.observeAsState(DateUtil.invoke())
-            val price by newHistoryViewModel.price.observeAsState()
-            val payment by newHistoryViewModel.payment.observeAsState()
-            val category by newHistoryViewModel.category.observeAsState()
+            val date by manageHistoryViewModel.date.observeAsState(DateUtil.invoke())
+            val price by manageHistoryViewModel.price.observeAsState()
+            val payment by manageHistoryViewModel.payment.observeAsState()
+            val category by manageHistoryViewModel.category.observeAsState()
 
-            val content by newHistoryViewModel.content.observeAsState("")
+            val content by manageHistoryViewModel.content.observeAsState("")
 
-            val buttonEnabled by newHistoryViewModel.buttonEnabled.observeAsState(false)
+            val buttonEnabled by manageHistoryViewModel.buttonEnabled.observeAsState(false)
 
             AccountbookTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -97,9 +107,10 @@ class NewHistoryFragment : Fragment() {
                         HistoryMainFilterButton(
                             isIncomeChecked = filter == TypeFilter.INCOME,
                             isExpenditureChecked = filter == TypeFilter.EXPENDITURE,
-                            onIncomeButtonPressed = { newHistoryViewModel.setType(TypeFilter.INCOME) },
-                            onExpenditureButtonPressed = { newHistoryViewModel.setType(TypeFilter.EXPENDITURE) },
+                            onIncomeButtonPressed = { manageHistoryViewModel.setType(TypeFilter.INCOME) },
+                            onExpenditureButtonPressed = { manageHistoryViewModel.setType(TypeFilter.EXPENDITURE) },
                             itemVisible = false,
+                            isActive = !editFlag,
                             modifier = Modifier.padding(16.dp)
                         )
                         ContentWithTitleItem(title = "일자") {
@@ -113,7 +124,7 @@ class NewHistoryFragment : Fragment() {
                         ContentWithTitleItem(title = "금액") {
                             TextFieldWithHint(
                                 price ?: "",
-                                onValueChange = { newHistoryViewModel.setPrice(it.toPriceFormat()) },
+                                onValueChange = { manageHistoryViewModel.setPrice(it.toPriceFormat()) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
@@ -133,20 +144,26 @@ class NewHistoryFragment : Fragment() {
                         }
                         if (filter == TypeFilter.EXPENDITURE) {
                             ContentWithTitleItem(title = "결제 수단") {
-                                DropDownComponent(list = paymentList.map { it.name }, selectItem = payment) {
-                                    newHistoryViewModel.setPayment(it)
+                                DropDownComponent(
+                                    list = paymentList.map { it.name },
+                                    selectItem = payment
+                                ) {
+                                    manageHistoryViewModel.setPayment(it)
                                 }
                             }
                         }
                         ContentWithTitleItem(title = "분류") {
-                            DropDownComponent(list = categoryList.map { it.title }, selectItem = category) {
-                                newHistoryViewModel.setCategory(it)
+                            DropDownComponent(
+                                list = categoryList.map { it.title },
+                                selectItem = category
+                            ) {
+                                manageHistoryViewModel.setCategory(it)
                             }
                         }
                         ContentWithTitleItem(title = "내용") {
                             TextFieldWithHint(
                                 content,
-                                onValueChange = { str -> newHistoryViewModel.setContent(str) },
+                                onValueChange = { str -> manageHistoryViewModel.setContent(str) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
@@ -181,6 +198,14 @@ class NewHistoryFragment : Fragment() {
     private fun initView() {
         observeData()
         buttonSetting()
+        oldHistory?.let {
+            manageHistoryViewModel.setType(it.type)
+            manageHistoryViewModel.setDate(Date(it.year, it.month, it.day))
+            manageHistoryViewModel.setCategory(it.category.title)
+            manageHistoryViewModel.setContent(it.content ?: "")
+            manageHistoryViewModel.setPrice(it.price.toString().toPriceFormat())
+            manageHistoryViewModel.setPayment(it.payment)
+        }
     }
 
     private fun buttonSetting() {
@@ -188,11 +213,11 @@ class NewHistoryFragment : Fragment() {
     }
 
     private fun observeData() {
-        accountBookViewModel.totalPaymentList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
-            newHistoryViewModel.setPaymentList(it)
+        accountBookViewModel.totalPaymentList.observe(this@ManageHistoryFragment.viewLifecycleOwner) {
+            manageHistoryViewModel.setPaymentList(it)
         }
-        accountBookViewModel.totalCategoryList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
-            newHistoryViewModel.setCategoryList(it)
+        accountBookViewModel.totalCategoryList.observe(this@ManageHistoryFragment.viewLifecycleOwner) {
+            manageHistoryViewModel.setCategoryList(it)
         }
     }
 

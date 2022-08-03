@@ -8,4 +8,4 @@ data class Category(
     val title: String,
     val color: Color,
     val type: String,
-): Serializable
+) : Serializable

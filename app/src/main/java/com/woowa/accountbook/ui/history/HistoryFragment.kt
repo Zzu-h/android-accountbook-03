@@ -25,9 +25,10 @@ import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
-import com.woowa.accountbook.ui.history.manage.NewHistoryFragment
+import com.woowa.accountbook.ui.history.manage.ManageHistoryFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.utils.DateUtil
+import java.io.Serializable
 
 class HistoryFragment : Fragment() {
 
@@ -84,7 +85,8 @@ class HistoryFragment : Fragment() {
                                     accountList = item,
                                     year = historyViewModel.year,
                                     month = historyViewModel.month,
-                                    day = date
+                                    day = date,
+                                    onItemClick = { changeFragment(FragmentTag, it) }
                                 )
                         }
                         if (emptyFlag) {
@@ -111,11 +113,7 @@ class HistoryFragment : Fragment() {
 
     private fun buttonSetting() {
         floatingButton.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .replace(R.id.fcv_main, NewHistoryFragment())
-                .addToBackStack("NewHistory")
-                .commit()
+            changeFragment(FragmentTag)
         }
     }
 
@@ -130,5 +128,23 @@ class HistoryFragment : Fragment() {
 
             historyViewModel.historyTitle.value = createTitle
         }
+    }
+
+    private fun changeFragment(tag: String, data: Serializable? = null) {
+        val fragment = ManageHistoryFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(SharedData, data)
+            }
+        }
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fcv_main, fragment)
+            .addToBackStack(tag)
+            .commit()
+    }
+
+    companion object {
+        const val FragmentTag = "NewHistory"
+        const val SharedData = "SharedData"
     }
 }

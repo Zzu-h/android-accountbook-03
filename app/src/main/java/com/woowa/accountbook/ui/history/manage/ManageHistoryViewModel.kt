@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class NewHistoryViewModel @Inject constructor(
+class ManageHistoryViewModel @Inject constructor(
     accountBookManageRepository: AccountBookManageRepository
 ) : ViewModel() {
 
