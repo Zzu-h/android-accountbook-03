@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -17,9 +18,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Payment
+import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.CommonButton
 import com.woowa.accountbook.ui.common.component.ContentWithTitleItem
 import com.woowa.accountbook.ui.common.component.SubAppBar
@@ -30,9 +33,11 @@ import com.woowa.accountbook.ui.theme.Purple200
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NewPaymentFragment : Fragment() {
+class ManagePaymentFragment : Fragment() {
 
     private val managePaymentViewModel by viewModels<ManagePaymentViewModel>()
+    private val accountBookViewModel: AccountBookViewModel by activityViewModels()
+
     private val oldPayment: Payment? by lazy {
         val payment = arguments?.getSerializable(SettingFragment.SharedData)
         if (payment != null) payment as Payment else null
@@ -80,7 +85,12 @@ class NewPaymentFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 40.dp, horizontal = 16.dp)
-                    ) { CommonButton(text = "등록하기", isActive = buttonActive) }
+                    ) {
+                        CommonButton(text = "등록하기", isActive = buttonActive) {
+                            if (editFlag) managePaymentViewModel.updatePayment(oldPaymentId = oldPayment!!.id)
+                            else managePaymentViewModel.addPayment()
+                        }
+                    }
                 }
             }
             return rootView
@@ -91,6 +101,14 @@ class NewPaymentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         oldPayment?.let {
             managePaymentViewModel.setPaymentName(it.name)
+        }
+        managePaymentViewModel.manageResult.observe(this@ManagePaymentFragment.viewLifecycleOwner) {
+            if (it) {
+                accountBookViewModel.fetchPaymentList()
+                parentFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(this.requireContext(), "문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

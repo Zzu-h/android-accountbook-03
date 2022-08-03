@@ -20,7 +20,7 @@ import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
 import com.woowa.accountbook.ui.setting.component.SettingMainItem
 import com.woowa.accountbook.ui.setting.manage.category.ManageCategoryFragment
-import com.woowa.accountbook.ui.setting.manage.payment.NewPaymentFragment
+import com.woowa.accountbook.ui.setting.manage.payment.ManagePaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.TypeFilter
@@ -111,7 +111,7 @@ class SettingFragment : Fragment() {
     private fun changeFragment(tag: String, data: Serializable? = null) {
         val fragment = when (tag) {
             TypeFilter.INCOME, TypeFilter.EXPENDITURE -> ManageCategoryFragment()
-            else -> NewPaymentFragment()
+            else -> ManagePaymentFragment()
         }.apply {
             arguments = Bundle().apply {
                 putString(FilterTag, tag)
