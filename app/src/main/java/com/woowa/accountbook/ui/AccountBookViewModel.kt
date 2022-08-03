@@ -75,7 +75,7 @@ class AccountBookViewModel @Inject constructor(
     private fun fetchPaymentList() {
         viewModelScope.launch {
             accountBookRepository.getAllPayment()
-                .onSuccess { _totalPaymentList.emit(it) }
+                .onSuccess { _totalPaymentList.emit(it.subList(1, it.size)) }
                 .onFailure { it.printStackTrace() }
         }
     }

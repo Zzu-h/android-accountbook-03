@@ -13,7 +13,7 @@ class SettingViewModel : ViewModel() {
     val paymentList = MutableLiveData<List<Payment>>()
 
     fun setPaymentList(totList: List<Payment>) {
-        this.paymentList.value = totList.subList(1, totList.size)
+        this.paymentList.value = totList
     }
 
     fun setCategoryList(list: List<Category>) {
