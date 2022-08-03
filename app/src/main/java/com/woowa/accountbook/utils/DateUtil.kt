@@ -1,5 +1,6 @@
 package com.woowa.accountbook.utils
 
+import com.woowa.accountbook.domain.model.Date
 import java.util.*
 
 object DateUtil {
@@ -12,12 +13,18 @@ object DateUtil {
         getDayOfWeekKR(calendar.get(Calendar.DAY_OF_WEEK))
     }
 
-    fun getDateToString(
-        year: Int = currentYear,
-        month: Int = currentMonth,
-        day: Int = currentDay
-    ): String {
-        return "${year}. ${month}. $day ${getDayOfWeek(year, month, day)}"
+    operator fun invoke(): Date {
+        return Date(currentYear, currentMonth, currentDay)
+    }
+
+    fun getDateToString(date: Date): String {
+        return "${date.year}. ${date.month}. ${date.day} ${
+            getDayOfWeek(
+                date.year,
+                date.month,
+                date.day
+            )
+        }"
     }
 
     fun getDayOfWeekCode(year: Int, month: Int, day: Int): Int {

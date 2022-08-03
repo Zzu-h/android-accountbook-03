@@ -2,7 +2,6 @@ package com.woowa.accountbook.ui.history.manage
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
+import com.woowa.accountbook.domain.model.Date
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.CommonButton
 import com.woowa.accountbook.ui.common.component.ContentWithTitleItem
@@ -35,8 +35,9 @@ import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.TypeFilter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class NewHistoryFragment : Fragment() {
 
     private val accountBookViewModel: AccountBookViewModel by activityViewModels()
@@ -50,13 +51,13 @@ class NewHistoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        datePickerDialog = DatePickerDialog(
+        DatePickerDialog(
             requireContext(),
-            null,
+            { _, y, m, d -> newHistoryViewModel.setDate(Date(y, m, d)) },
             DateUtil.currentYear,
             DateUtil.currentMonth,
             DateUtil.currentDay
-        )
+        ).also { datePickerDialog = it }
 
         val rootView: View = inflater.inflate(R.layout.fragment_new_history, container, false)
         cvAppBar = rootView.findViewById(R.id.cv_tool_bar)
@@ -81,6 +82,15 @@ class NewHistoryFragment : Fragment() {
             val paymentList by newHistoryViewModel.paymentList.observeAsState(emptyList())
             val categoryList by newHistoryViewModel.categoryList.observeAsState(emptyList())
 
+            val date by newHistoryViewModel.date.observeAsState(DateUtil.invoke())
+            val price by newHistoryViewModel.price.observeAsState()
+            val payment by newHistoryViewModel.payment.observeAsState()
+            val category by newHistoryViewModel.category.observeAsState()
+
+            val content by newHistoryViewModel.content.observeAsState("")
+
+            val buttonEnabled by newHistoryViewModel.buttonEnabled.observeAsState(false)
+
             AccountbookTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
@@ -94,7 +104,7 @@ class NewHistoryFragment : Fragment() {
                         )
                         ContentWithTitleItem(title = "일자") {
                             Text(
-                                DateUtil.getDateToString(),
+                                DateUtil.getDateToString(date),
                                 modifier = Modifier.clickable(true) { datePickerDialog.show() },
                                 color = MaterialTheme.colors.primary,
                                 fontWeight = FontWeight.Bold
@@ -102,8 +112,8 @@ class NewHistoryFragment : Fragment() {
                         }
                         ContentWithTitleItem(title = "금액") {
                             TextFieldWithHint(
-                                "",
-                                onValueChange = { str -> Log.d("Tester", str) },
+                                price ?: "",
+                                onValueChange = { newHistoryViewModel.setPrice(it.toPriceFormat()) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
@@ -111,6 +121,7 @@ class NewHistoryFragment : Fragment() {
                                     fontWeight = FontWeight.Bold
                                 ),
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                                cursorToLast = true,
                                 hint = {
                                     Text(
                                         text = "입력하세요",
@@ -121,13 +132,21 @@ class NewHistoryFragment : Fragment() {
                             )
                         }
                         if (filter == TypeFilter.EXPENDITURE) {
-                            ContentWithTitleItem(title = "결제 수단") { DropDownComponent(list = paymentList.map { it.name }) }
+                            ContentWithTitleItem(title = "결제 수단") {
+                                DropDownComponent(list = paymentList.map { it.name }, selectItem = payment) {
+                                    newHistoryViewModel.setPayment(it)
+                                }
+                            }
                         }
-                        ContentWithTitleItem(title = "분류") { DropDownComponent(list = categoryList.map { it.title }) }
+                        ContentWithTitleItem(title = "분류") {
+                            DropDownComponent(list = categoryList.map { it.title }, selectItem = category) {
+                                newHistoryViewModel.setCategory(it)
+                            }
+                        }
                         ContentWithTitleItem(title = "내용") {
                             TextFieldWithHint(
-                                "",
-                                onValueChange = { str -> Log.d("Tester", str) },
+                                content,
+                                onValueChange = { str -> newHistoryViewModel.setContent(str) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
@@ -148,7 +167,7 @@ class NewHistoryFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 40.dp, horizontal = 16.dp)
-                    ) { CommonButton(text = "등록하기") }
+                    ) { CommonButton(text = "등록하기", isActive = buttonEnabled) }
                 }
             }
         }
@@ -170,10 +189,23 @@ class NewHistoryFragment : Fragment() {
 
     private fun observeData() {
         accountBookViewModel.totalPaymentList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
-            newHistoryViewModel.setPayment(it)
+            newHistoryViewModel.setPaymentList(it)
         }
         accountBookViewModel.totalCategoryList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
-            newHistoryViewModel.setCategory(it)
+            newHistoryViewModel.setCategoryList(it)
         }
+    }
+
+    private fun String.toPriceFormat(): String {
+        var ret = ""
+        if (this.isBlank()) return ret
+        val str = this.replace(",", "").reversed()
+        val comaInterval = 3
+
+        str.forEachIndexed { i, it ->
+            ret += it
+            if (i % comaInterval == 2 && i < str.lastIndex) ret += ','
+        }
+        return ret.reversed()
     }
 }
