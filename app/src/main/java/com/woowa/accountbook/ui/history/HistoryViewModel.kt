@@ -8,6 +8,7 @@ import com.woowa.accountbook.utils.TypeFilter
 class HistoryViewModel : ViewModel() {
     val maxDate = 32
 
+    private var totHistory = emptyList<History>()
     val historyCalendar = MutableLiveData<List<MutableList<History>>>()
     val historyTitle = MutableLiveData("hihi")
 
@@ -23,24 +24,36 @@ class HistoryViewModel : ViewModel() {
     fun setTotalData(totList: List<History>) {
         totIncome = 0
         totExpenditure = 0
-        val list = List<MutableList<History>>(maxDate) { mutableListOf() }
-        totList.forEach {
-            list[it.day].add(it)
-            if (it.type == TypeFilter.INCOME) totIncome += it.price
-            else if (it.type == TypeFilter.EXPENDITURE) totExpenditure += it.price
-        }
-        historyCalendar.value = list
+        totHistory = totList
+        filteringData()
     }
 
     fun filteringIncomeData() {
         val flag = !(incomeFilter.value ?: true)
-
         incomeFilter.value = flag
+        filteringData()
     }
 
     fun filteringExpenditureData() {
         val flag = !(expenditureFilter.value ?: true)
-
         expenditureFilter.value = flag
+        filteringData()
+    }
+
+    private fun filteringData() {
+        val incomeFlag = incomeFilter.value!!
+        val expenditureFlag = expenditureFilter.value!!
+
+        val list = List<MutableList<History>>(maxDate) { mutableListOf() }
+        totHistory.forEach {
+            if (it.type == TypeFilter.INCOME && incomeFlag) {
+                totIncome += it.price
+                list[it.day].add(it)
+            } else if (it.type == TypeFilter.EXPENDITURE && expenditureFlag) {
+                totExpenditure += it.price
+                list[it.day].add(it)
+            }
+        }
+        historyCalendar.value = list
     }
 }
