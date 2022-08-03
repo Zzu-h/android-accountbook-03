@@ -23,6 +23,7 @@ import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.AccountInfoPerDayItem
 import com.woowa.accountbook.ui.common.component.MainAppBar
+import com.woowa.accountbook.ui.common.component.SubAppBar
 import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.ManageHistoryFragment
@@ -47,19 +48,32 @@ class HistoryFragment : Fragment() {
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
             setContent {
                 val title by historyViewModel.historyTitle.observeAsState("hihi")
+                val editFlag by historyViewModel.editFlag.observeAsState(false)
+                val trashList by historyViewModel.trashList.observeAsState(emptyList())
 
                 AccountbookTheme() {
-                    MainAppBar(
-                        title = title,
-                        onNextIconPressed = { accountBookViewModel.plusMonth() },
-                        onPrevIconPressed = { accountBookViewModel.minusMonth() },
-                        onTitlePressed = {
-                            MonthYearPickerDialog(DateUtil.currentYear, DateUtil.currentMonth).show(
-                                parentFragmentManager,
-                                getString(R.string.fragment_calendar)
-                            )
-                        }
-                    )
+                    if (editFlag)
+                        SubAppBar(
+                            title = "${trashList.size}개 선택",
+                            trashButtonActivate = true,
+                            onBackIconPressed = {},
+                            onTrashIconPressed = {}
+                        )
+                    else
+                        MainAppBar(
+                            title = title,
+                            onNextIconPressed = { accountBookViewModel.plusMonth() },
+                            onPrevIconPressed = { accountBookViewModel.minusMonth() },
+                            onTitlePressed = {
+                                MonthYearPickerDialog(
+                                    DateUtil.currentYear,
+                                    DateUtil.currentMonth
+                                ).show(
+                                    parentFragmentManager,
+                                    getString(R.string.fragment_calendar)
+                                )
+                            }
+                        )
                 }
             }
         }
@@ -70,6 +84,9 @@ class HistoryFragment : Fragment() {
                 val expenditureFilter by historyViewModel.expenditureFilter.observeAsState(true)
                 val emptyFlag by historyViewModel.emptyFlag.observeAsState(true)
 
+                val editFlag by historyViewModel.editFlag.observeAsState(false)
+                val trashList by historyViewModel.trashList.observeAsState(emptyList())
+
                 AccountbookTheme {
                     Column {
                         HistoryMainFilterButton(
@@ -77,16 +94,22 @@ class HistoryFragment : Fragment() {
                             isExpenditureChecked = expenditureFilter,
                             onIncomeButtonPressed = { historyViewModel.filteringIncomeData() },
                             onExpenditureButtonPressed = { historyViewModel.filteringExpenditureData() },
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                            isActive = !editFlag
                         )
                         calendarData?.forEachIndexed { date, item ->
                             if (item.isNotEmpty())
                                 AccountInfoPerDayItem(
                                     accountList = item,
+                                    trashList = trashList,
                                     year = historyViewModel.year,
                                     month = historyViewModel.month,
                                     day = date,
-                                    onItemClick = { changeFragment(FragmentTag, it) }
+                                    onItemClick = {
+                                        if (!editFlag) changeFragment(FragmentTag, it)
+                                        else historyViewModel.branchOffTrash(it)
+                                    },
+                                    onItemLongClick = { historyViewModel.branchOffTrash(it) }
                                 )
                         }
                         if (emptyFlag) {

@@ -18,6 +18,7 @@ import com.woowa.accountbook.utils.TypeFilter
 @Composable
 fun AccountInfoPerDayItem(
     accountList: List<History>,
+    trashList: List<History>,
     year: Int,
     month: Int,
     day: Int,
@@ -63,6 +64,7 @@ fun AccountInfoPerDayItem(
             AccountInfoItem(
                 item,
                 modifier = modifier.padding(16.dp),
+                isSelected = trashList.contains(item),
                 onItemLongClick = onItemLongClick,
                 onItemClick = onItemClick
             )
