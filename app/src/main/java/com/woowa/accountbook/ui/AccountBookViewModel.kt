@@ -1,8 +1,8 @@
 package com.woowa.accountbook.ui
 
 import androidx.lifecycle.*
-import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.domain.repository.AccountBookRepository
 import com.woowa.accountbook.utils.DateUtil
@@ -38,6 +38,7 @@ class AccountBookViewModel @Inject constructor(
         this.month = _month
         fetchHistoryList()
         fetchCategoryList()
+        fetchPaymentList()
     }
 
     private val isNull: Boolean = (_year.value == null || _month.value == null)
