@@ -16,34 +16,6 @@ class HistoryViewModel : ViewModel() {
     val expenditureFilter = MutableLiveData(true)
     val emptyFlag = MutableLiveData(true)
 
-    val trashList = MutableLiveData<List<History>>(emptyList())
-    val editFlag = MutableLiveData(false)
-
-    fun branchOffTrash(history: History) {
-        trashList.value?.let {
-            if (it.contains(history)) removeTrashList(history)
-            else addTrashList(history)
-        }
-    }
-
-    private fun addTrashList(history: History) {
-        trashList.value?.let {
-            val list = it.toMutableList()
-            list.add(history)
-            trashList.value = list.toList()
-            editFlag.value = list.isNotEmpty()
-        }
-    }
-
-    private fun removeTrashList(history: History) {
-        trashList.value?.let {
-            val list = it.toMutableList()
-            list.remove(history)
-            trashList.value = list.toList()
-            editFlag.value = list.isNotEmpty()
-        }
-    }
-
     var totIncome = 0
     var totExpenditure = 0
 
@@ -88,5 +60,33 @@ class HistoryViewModel : ViewModel() {
         }
         historyCalendar.value = list
         emptyFlag.value = tmpEmptyFlag
+    }
+
+    val trashList = MutableLiveData<List<History>>(emptyList())
+    val editFlag = MutableLiveData(false)
+
+    fun branchOffTrash(history: History) {
+        trashList.value?.let {
+            if (it.contains(history)) removeTrashList(history)
+            else addTrashList(history)
+        }
+    }
+
+    private fun addTrashList(history: History) {
+        trashList.value?.let {
+            val list = it.toMutableList()
+            list.add(history)
+            trashList.value = list.toList()
+            editFlag.value = list.isNotEmpty()
+        }
+    }
+
+    private fun removeTrashList(history: History) {
+        trashList.value?.let {
+            val list = it.toMutableList()
+            list.remove(history)
+            trashList.value = list.toList()
+            editFlag.value = list.isNotEmpty()
+        }
     }
 }
