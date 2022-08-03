@@ -10,11 +10,12 @@ import com.woowa.accountbook.utils.TypeFilter
 class StatisticViewModel : ViewModel() {
 
     private var loadedData = mutableListOf<Pair>()
+
     val statisticData = MutableLiveData<MutableList<CategoryStatisticDto>>()
-
     val statisticTitle = MutableLiveData("hihi")
+    val totalHistory = MutableLiveData<Int>()
 
-    var totExpenditure = 0
+    private var totExpenditure = 0
 
     var year = 2022
     var month = 7
@@ -40,16 +41,24 @@ class StatisticViewModel : ViewModel() {
 
             val statisticList = mutableListOf<CategoryStatisticDto>()
             loadedData.forEach {
-                statisticList.add(
-                    CategoryStatisticDto(
-                        it.category,
-                        it.price,
-                        (it.price.toFloat() / totExpenditure.toFloat())
+                if (it.price > 0)
+                    statisticList.add(
+                        CategoryStatisticDto(
+                            it.category,
+                            it.price,
+                            (it.price.toFloat() / totExpenditure.toFloat())
+                        )
                     )
-                )
             }
             statisticData.value = statisticList
+            totalHistory.value = totExpenditure
+            initialize()
         }
+    }
+
+    private fun initialize() {
+        loadedData.forEach { it.price = 0 }
+        totExpenditure = 0
     }
 
     private fun findIdx(categoryId: Int): Int {

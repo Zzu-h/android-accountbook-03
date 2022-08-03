@@ -32,6 +32,7 @@ import com.woowa.accountbook.ui.statistic.component.GraphComponent
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.utils.DateUtil
+import com.woowa.accountbook.utils.StringUtil
 
 class StatisticFragment : Fragment() {
 
@@ -66,19 +67,22 @@ class StatisticFragment : Fragment() {
 
         rootView.findViewById<ComposeView>(R.id.cv_statistic_content).apply {
             setContent {
+                val totalHistory by statisticViewModel.totalHistory.observeAsState(0)
                 val categoryStatisticDto by statisticViewModel.statisticData.observeAsState(
                     emptyList()
                 )
                 AccountbookTheme {
-                    Column() {
+                    Column {
                         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
                             Text(
                                 "이번 달 총 지출 금액", fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colors.primary
                             )
                             Text(
-                                "12345", fontWeight = FontWeight.Bold,
-                                modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End,
+                                StringUtil.getMoneyFormatString(totalHistory),
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.End,
                                 color = Red
                             )
                         }
