@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -17,9 +18,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.*
 import com.woowa.accountbook.ui.setting.SettingFragment.Companion.FilterTag
 import com.woowa.accountbook.ui.setting.SettingFragment.Companion.SharedData
@@ -31,8 +34,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ManageCategoryFragment : Fragment() {
 
-    private val categoryType by lazy { requireArguments().getString(FilterTag) }
     private val manageCategoryViewModel by viewModels<ManageCategoryViewModel>()
+    private val accountBookViewModel: AccountBookViewModel by activityViewModels()
+
+    private val categoryType by lazy { requireArguments().getString(FilterTag) }
     private val oldCategory: Category? by lazy {
         val category = arguments?.getSerializable(SharedData)
         if (category != null) category as Category else null
@@ -98,7 +103,15 @@ class ManageCategoryFragment : Fragment() {
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(vertical = 40.dp, horizontal = 16.dp)
-                    ) { CommonButton(text = "등록하기", isActive = buttonActive) }
+                    ) {
+                        CommonButton(text = "등록하기", isActive = buttonActive) {
+                            if (editFlag) manageCategoryViewModel.updateCategory(
+                                filter = categoryType!!,
+                                oldCategoryId = oldCategory!!.id
+                            )
+                            else manageCategoryViewModel.addCategory(filter = categoryType!!)
+                        }
+                    }
                 }
             }
             return rootView
@@ -110,6 +123,14 @@ class ManageCategoryFragment : Fragment() {
         oldCategory?.let {
             manageCategoryViewModel.setCategoryColor(it.color)
             manageCategoryViewModel.setCategoryName(it.title)
+        }
+        manageCategoryViewModel.manageResult.observe(this@ManageCategoryFragment.viewLifecycleOwner) {
+            if (it) {
+                accountBookViewModel.fetchCategoryList()
+                parentFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(this.requireContext(), "문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
