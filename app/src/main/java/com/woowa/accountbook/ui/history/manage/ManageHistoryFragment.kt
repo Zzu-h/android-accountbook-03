@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -189,11 +190,8 @@ class ManageHistoryFragment : Fragment() {
                             text = if (editFlag) "수정하기" else "등록하기",
                             isActive = buttonEnabled
                         ) {
-                            val flag =
-                                if (editFlag) manageHistoryViewModel.updateCategory()
-                                else manageHistoryViewModel.addCategory()
-
-                            if (flag) accountBookViewModel.fetchCategoryList()
+                            if (editFlag) manageHistoryViewModel.updateHistory(oldHistoryId = oldHistory!!.id)
+                            else manageHistoryViewModel.addHistory()
                         }
                     }
                 }
@@ -215,7 +213,7 @@ class ManageHistoryFragment : Fragment() {
             manageHistoryViewModel.setCategory(it.category.title)
             manageHistoryViewModel.setContent(it.content ?: "")
             manageHistoryViewModel.setPrice(it.price.toString().toPriceFormat())
-            manageHistoryViewModel.setPayment(it.payment)
+            manageHistoryViewModel.setPayment(it.payment.name)
         }
     }
 
@@ -229,6 +227,14 @@ class ManageHistoryFragment : Fragment() {
         }
         accountBookViewModel.totalCategoryList.observe(this@ManageHistoryFragment.viewLifecycleOwner) {
             manageHistoryViewModel.setCategoryList(it)
+        }
+        manageHistoryViewModel.manageResult.observe(this@ManageHistoryFragment.viewLifecycleOwner) {
+            if (it) {
+                accountBookViewModel.fetchHistoryList()
+                parentFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(this.requireContext(), "문제가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.woowa.accountbook.ui.history
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.woowa.accountbook.domain.model.History
@@ -16,15 +17,17 @@ class HistoryViewModel : ViewModel() {
     val expenditureFilter = MutableLiveData(true)
     val emptyFlag = MutableLiveData(true)
 
-    var totIncome = 0
-    var totExpenditure = 0
+
+    private val _totIncome = MutableLiveData(0)
+    private val _totExpenditure = MutableLiveData(0)
+
+    val totIncome: LiveData<Int> = _totIncome
+    val totExpenditure: LiveData<Int> = _totExpenditure
 
     var year = 2022
     var month = 7
 
     fun setTotalData(totList: List<History>) {
-        totIncome = 0
-        totExpenditure = 0
         totHistory = totList
         filteringData()
     }
@@ -46,20 +49,25 @@ class HistoryViewModel : ViewModel() {
         val expenditureFlag = expenditureFilter.value!!
         var tmpEmptyFlag = true
 
+        var tmpIncome = 0
+        var tmpExpenditure = 0
+
         val list = List<MutableList<History>>(maxDate) { mutableListOf() }
         totHistory.forEach {
-            if (it.type == TypeFilter.INCOME && incomeFlag) {
-                totIncome += it.price
-                list[it.day].add(it)
+            if (it.type == TypeFilter.INCOME) {
+                tmpIncome += it.price
+                if (incomeFlag) list[it.day].add(it)
                 tmpEmptyFlag = false
-            } else if (it.type == TypeFilter.EXPENDITURE && expenditureFlag) {
-                totExpenditure += it.price
-                list[it.day].add(it)
+            } else if (it.type == TypeFilter.EXPENDITURE) {
+                tmpExpenditure += it.price
+                if (expenditureFlag) list[it.day].add(it)
                 tmpEmptyFlag = false
             }
         }
         historyCalendar.value = list
         emptyFlag.value = tmpEmptyFlag
+        _totIncome.value = tmpIncome
+        _totExpenditure.value = tmpExpenditure
     }
 
     val trashList = MutableLiveData<List<History>>(emptyList())

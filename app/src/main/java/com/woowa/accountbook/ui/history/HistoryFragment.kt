@@ -86,12 +86,17 @@ class HistoryFragment : Fragment() {
                 val expenditureFilter by historyViewModel.expenditureFilter.observeAsState(true)
                 val emptyFlag by historyViewModel.emptyFlag.observeAsState(true)
 
+                val totIncome by historyViewModel.totIncome.observeAsState(0)
+                val totExpenditure by historyViewModel.totExpenditure.observeAsState(0)
+
                 val editFlag by historyViewModel.editFlag.observeAsState(false)
                 val trashList by historyViewModel.trashList.observeAsState(emptyList())
 
                 AccountbookTheme {
                     Column {
                         HistoryMainFilterButton(
+                            totIncome = totIncome,
+                            totExpenditure = totExpenditure,
                             isIncomeChecked = incomeFilter,
                             isExpenditureChecked = expenditureFilter,
                             onIncomeButtonPressed = { historyViewModel.filteringIncomeData() },

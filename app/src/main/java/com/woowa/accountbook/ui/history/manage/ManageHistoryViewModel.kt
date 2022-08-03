@@ -3,21 +3,25 @@ package com.woowa.accountbook.ui.history.manage
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.domain.model.Date
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.domain.repository.AccountBookManageRepository
+import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.TypeFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ManageHistoryViewModel @Inject constructor(
-    accountBookManageRepository: AccountBookManageRepository
+    private val accountBookManageRepository: AccountBookManageRepository
 ) : ViewModel() {
 
-    private val _date = MutableLiveData<Date>()
+    private val _date = MutableLiveData(DateUtil.invoke())
     private val _price = MutableLiveData<String>()
     private val _payment = MutableLiveData<String>()
     private val _category = MutableLiveData<String>()
@@ -74,6 +78,8 @@ class ManageHistoryViewModel @Inject constructor(
         val expense = mutableListOf<Category>()
 
         categoryList.forEach { if (it.type == TypeFilter.INCOME) incomes.add(it) else expense.add(it) }
+        incomes.removeAt(0)
+        expense.removeAt(0)
 
         incomeCategoryList = incomes.toList()
         expenditureCategoryList = expense.toList()
@@ -94,13 +100,82 @@ class ManageHistoryViewModel @Inject constructor(
             (money != null && money.isNotBlank() && (isIncome || pay != null && pay.isNotBlank()))
     }
 
-    fun addCategory(): Boolean {
+    private val _manageResult = MutableLiveData<Boolean>()
+    val manageResult: LiveData<Boolean> = _manageResult
 
-        return true
+    fun updateHistory(oldHistoryId: Int) = viewModelScope.launch {
+        accountBookManageRepository.updateHistory(
+            History(
+                id = oldHistoryId,
+                content = _content.value,
+                payment = getPayment(filterType.value!!),
+                price = _price.value!!.toIntForPriceFormat(),
+                year = _date.value!!.year,
+                month = _date.value!!.month,
+                day = _date.value!!.day,
+                type = filterType.value!!,
+                category = getCategory(filterType.value!!)
+            )
+        )
+            .onSuccess { _manageResult.value = it }
+            .onFailure {
+                it.printStackTrace()
+                _manageResult.value = false
+            }
     }
 
-    fun updateCategory(): Boolean {
+    fun addHistory() = viewModelScope.launch {
+        accountBookManageRepository.addHistory(
+            History(
+                id = -1,
+                content = _content.value,
+                payment = getPayment(filterType.value!!),
+                price = _price.value!!.toIntForPriceFormat(),
+                year = _date.value!!.year,
+                month = _date.value!!.month,
+                day = _date.value!!.day,
+                type = filterType.value!!,
+                category = getCategory(filterType.value!!)
+            )
+        )
+            .onSuccess { _manageResult.value = it }
+            .onFailure {
+                it.printStackTrace()
+                _manageResult.value = false
+            }
+    }
 
-        return true
+    private fun getPayment(filter: String): Payment {
+        val name = _payment.value ?: ""
+        return if (filter == TypeFilter.INCOME) {
+            Payment(1, name)
+        } else {
+            var id = 2
+            paymentList.value?.forEach {
+                if (it.name == name)
+                    id = it.id
+            }
+            Payment(id, name)
+        }
+    }
+
+    private fun getCategory(filter: String): Category {
+        val name = _category.value ?: ""
+        if (filter == TypeFilter.INCOME) {
+            incomeCategoryList.forEach {
+                if (it.title == name) return it
+            }
+            return Category(1, "미분류", Purple200, filter)
+        } else {
+            expenditureCategoryList.forEach {
+                if (it.title == name) return it
+            }
+            return Category(2, "미분류", Purple200, filter)
+        }
+
+    }
+
+    private fun String.toIntForPriceFormat(): Int {
+        return this.replace(",", "").toInt()
     }
 }

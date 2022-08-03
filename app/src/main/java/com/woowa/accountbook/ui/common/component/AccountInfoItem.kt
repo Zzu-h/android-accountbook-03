@@ -86,7 +86,7 @@ fun AccountInfoItem(
                 .padding(vertical = 8.dp)
         ) {
             Text(
-                text = payment, modifier = Modifier
+                text = payment.name, modifier = Modifier
                     .padding(bottom = 8.dp)
                     .align(Alignment.End),
                 color = contentColor,

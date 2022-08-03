@@ -1,13 +1,12 @@
 package com.woowa.accountbook.domain.model
 
 import com.woowa.accountbook.data.dto.HistoryDto
-import com.woowa.accountbook.data.dto.PaymentDto
 import java.io.Serializable
 
 data class History(
     val id: Int = -1,
     val content: String?,
-    val payment: String,
+    val payment: Payment,
     val category: Category,
     val price: Int,
     val year: Int,
@@ -19,7 +18,7 @@ data class History(
         return HistoryDto(
             id = id,
             price = price,
-            payment = PaymentDto(-1, payment, type = type),
+            payment = payment.toPaymentDto(),
             category = category.toCategoryDto(),
             content = content,
             year = year,

@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun HistoryMainFilterButton(
+    totIncome: Int = 0,
+    totExpenditure: Int = 0,
     isIncomeChecked: Boolean = true,
     isExpenditureChecked: Boolean = true,
     isActive: Boolean = true,
@@ -35,13 +37,15 @@ fun HistoryMainFilterButton(
             isChecked = isIncomeChecked,
             onButtonPressed = onIncomeButtonPressed,
             isActive = isActive,
-            itemVisible = itemVisible
+            itemVisible = itemVisible,
+            totPrice = totIncome
         )
         HistoryExpenditureFilterButton(
             isChecked = isExpenditureChecked,
             onButtonPressed = onExpenditureButtonPressed,
             isActive = isActive,
-            itemVisible = itemVisible
+            itemVisible = itemVisible,
+            totPrice = totExpenditure
         )
     }
 }
