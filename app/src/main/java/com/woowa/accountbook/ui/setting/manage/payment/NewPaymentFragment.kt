@@ -1,4 +1,4 @@
-package com.woowa.accountbook.ui.setting.new
+package com.woowa.accountbook.ui.setting.manage.payment
 
 import android.os.Bundle
 import android.util.Log
@@ -44,7 +44,7 @@ class NewPaymentFragment : Fragment() {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
                         ContentWithTitleItem(title = "이름") {
                             TextFieldWithHint(
-                                "1234",
+                                "",
                                 onValueChange = { str -> Log.d("Tester", str) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),

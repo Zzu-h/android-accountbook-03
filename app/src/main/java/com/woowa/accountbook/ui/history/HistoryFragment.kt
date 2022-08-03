@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -63,6 +67,7 @@ class HistoryFragment : Fragment() {
                 val calendarData by historyViewModel.historyCalendar.observeAsState()
                 val incomeFilter by historyViewModel.incomeFilter.observeAsState(true)
                 val expenditureFilter by historyViewModel.expenditureFilter.observeAsState(true)
+                val emptyFlag by historyViewModel.emptyFlag.observeAsState(true)
 
                 AccountbookTheme {
                     Column {
@@ -81,6 +86,11 @@ class HistoryFragment : Fragment() {
                                     month = historyViewModel.month,
                                     day = date
                                 )
+                        }
+                        if (emptyFlag) {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                Text(text = "내용이 없습니다", modifier = Modifier.align(Alignment.Center))
+                            }
                         }
                     }
                 }

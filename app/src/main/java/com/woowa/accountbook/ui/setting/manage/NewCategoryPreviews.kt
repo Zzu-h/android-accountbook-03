@@ -1,4 +1,4 @@
-package com.woowa.accountbook.ui.setting.new
+package com.woowa.accountbook.ui.setting.manage
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.woowa.accountbook.ui.setting.new.component.ColorPaletteComponent
+import com.woowa.accountbook.ui.setting.manage.component.ColorPaletteComponent
 import com.woowa.accountbook.ui.theme.*
 
 @OptIn(ExperimentalFoundationApi::class)
