@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -151,6 +152,7 @@ class HistoryFragment : Fragment() {
 
             historyViewModel.historyTitle.value = createTitle
         }
+        historyViewModel.editFlag.observe(this.viewLifecycleOwner) { floatingButton.isGone = it }
     }
 
     private fun changeFragment(tag: String, data: Serializable? = null) {
