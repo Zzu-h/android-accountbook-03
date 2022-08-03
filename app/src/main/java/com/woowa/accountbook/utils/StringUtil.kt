@@ -16,6 +16,11 @@ object StringUtil {
         return "${if (isMinus) '-' else ""}${getMoneyFormatString(price)} 원"
     }
 
+    fun getPriceToString(price: Int): String {
+        val isMinus = price < 0
+        return "${if (isMinus) '-' else ""}${getMoneyFormatString(price)}"
+    }
+
     fun getMoneyFormatString(price: Int): String {
         val str = format.format(price.absoluteValue)
 

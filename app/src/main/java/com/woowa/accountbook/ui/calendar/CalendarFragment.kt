@@ -29,6 +29,7 @@ import com.woowa.accountbook.ui.theme.Purple700
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.DateUtil
+import com.woowa.accountbook.utils.StringUtil
 
 class CalendarFragment : Fragment() {
 
@@ -44,7 +45,7 @@ class CalendarFragment : Fragment() {
 
         rootView.findViewById<ComposeView>(R.id.cv_tool_bar).apply {
             setContent {
-                val title by calendarViewModel.historyTitle.observeAsState("hihi")
+                val title by calendarViewModel.historyTitle.observeAsState("")
 
                 AccountbookTheme() {
                     MainAppBar(
@@ -63,18 +64,38 @@ class CalendarFragment : Fragment() {
         }
         rootView.findViewById<ComposeView>(R.id.cv_calendar_content).apply {
             setContent {
-                val calendarData by calendarViewModel.historyCalendar.observeAsState()
+                val year by accountBookViewModel.month.observeAsState(2022)
+                val month by accountBookViewModel.month.observeAsState(7)
+
+                val totalHistory by calendarViewModel.totalHistory.observeAsState(Pair(0, 0))
+                val calendarData by calendarViewModel.historyCalendar.observeAsState(
+                    List(
+                        calendarViewModel.maxDate
+                    ) { Pair(30231, 585959) })
 
                 AccountbookTheme {
                     Column {
                         CustomCalendar(
-                            year = 2022,
-                            month = 7,
-                            calendarData = List(32) { Pair(30231, 585959) })
+                            year = year,
+                            month = month,
+                            calendarData = calendarData
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
-                        CalendarTotText(title = "수입", price = "2131", color = Teal200)
-                        CalendarTotText(title = "지출", price = "-2131", color = Red)
-                        CalendarTotText(title = "총합", price = "2131", color = Purple700)
+                        CalendarTotText(
+                            title = "수입",
+                            price = StringUtil.getPriceToString(totalHistory.first),
+                            color = Teal200
+                        )
+                        CalendarTotText(
+                            title = "지출",
+                            price = StringUtil.getPriceToString(totalHistory.second),
+                            color = Red
+                        )
+                        CalendarTotText(
+                            title = "총합",
+                            price = StringUtil.getPriceToString(totalHistory.first - totalHistory.second),
+                            color = Purple700
+                        )
 
                         Divider(
                             modifier = Modifier
@@ -86,6 +107,28 @@ class CalendarFragment : Fragment() {
                 }
             }
             return rootView
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        observeData()
+    }
+
+    private fun observeData() {
+        accountBookViewModel.totalHistoryList.observe(this.viewLifecycleOwner) { data ->
+            calendarViewModel.setTotalData(data)
+        }
+        accountBookViewModel.month.observe(this.viewLifecycleOwner) { month ->
+            calendarViewModel.year = accountBookViewModel.year.value ?: 2022
+            calendarViewModel.month = month
+            val createTitle = "${calendarViewModel.year}년 ${month}월"
+
+            calendarViewModel.historyTitle.value = createTitle
         }
     }
 }

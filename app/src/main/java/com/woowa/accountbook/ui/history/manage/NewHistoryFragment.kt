@@ -29,18 +29,18 @@ import com.woowa.accountbook.ui.common.component.CommonButton
 import com.woowa.accountbook.ui.common.component.ContentWithTitleItem
 import com.woowa.accountbook.ui.common.component.SubAppBar
 import com.woowa.accountbook.ui.common.component.TextFieldWithHint
-import com.woowa.accountbook.ui.history.HistoryViewModel
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.component.DropDownComponent
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.DateUtil
+import com.woowa.accountbook.utils.TypeFilter
 
 
 class NewHistoryFragment : Fragment() {
 
     private val accountBookViewModel: AccountBookViewModel by activityViewModels()
-    private val historyViewModel: HistoryViewModel by viewModels()
+    private val newHistoryViewModel: NewHistoryViewModel by viewModels()
 
     private lateinit var cvAppBar: ComposeView
     private lateinit var cvContent: ComposeView
@@ -68,7 +68,7 @@ class NewHistoryFragment : Fragment() {
 
     private fun drawView() {
         cvAppBar.setContent {
-            val title by historyViewModel.historyTitle.observeAsState("hihi")
+            val title = "내역 등록"
             AccountbookTheme() {
                 SubAppBar(
                     title = title,
@@ -77,15 +77,18 @@ class NewHistoryFragment : Fragment() {
             }
         }
         cvContent.setContent {
-            val filter = false
+            val filter by newHistoryViewModel.filterType.observeAsState(TypeFilter.EXPENDITURE)
+            val paymentList by newHistoryViewModel.paymentList.observeAsState(emptyList())
+            val categoryList by newHistoryViewModel.categoryList.observeAsState(emptyList())
+
             AccountbookTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
                         HistoryMainFilterButton(
-                            isIncomeChecked = filter,
-                            isExpenditureChecked = filter.not(),
-                            onIncomeButtonPressed = {},
-                            onExpenditureButtonPressed = {},
+                            isIncomeChecked = filter == TypeFilter.INCOME,
+                            isExpenditureChecked = filter == TypeFilter.EXPENDITURE,
+                            onIncomeButtonPressed = { newHistoryViewModel.setType(TypeFilter.INCOME) },
+                            onExpenditureButtonPressed = { newHistoryViewModel.setType(TypeFilter.EXPENDITURE) },
                             itemVisible = false,
                             modifier = Modifier.padding(16.dp)
                         )
@@ -99,7 +102,7 @@ class NewHistoryFragment : Fragment() {
                         }
                         ContentWithTitleItem(title = "금액") {
                             TextFieldWithHint(
-                                "1234",
+                                "",
                                 onValueChange = { str -> Log.d("Tester", str) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
@@ -117,13 +120,13 @@ class NewHistoryFragment : Fragment() {
                                 }
                             )
                         }
-                        if (filter.not()) {
-                            ContentWithTitleItem(title = "결제 수단") { DropDownComponent() }
+                        if (filter == TypeFilter.EXPENDITURE) {
+                            ContentWithTitleItem(title = "결제 수단") { DropDownComponent(list = paymentList.map { it.name }) }
                         }
-                        ContentWithTitleItem(title = "분류") { DropDownComponent() }
+                        ContentWithTitleItem(title = "분류") { DropDownComponent(list = categoryList.map { it.title }) }
                         ContentWithTitleItem(title = "내용") {
                             TextFieldWithHint(
-                                "1234",
+                                "",
                                 onValueChange = { str -> Log.d("Tester", str) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
@@ -157,7 +160,6 @@ class NewHistoryFragment : Fragment() {
     }
 
     private fun initView() {
-
         observeData()
         buttonSetting()
     }
@@ -167,6 +169,11 @@ class NewHistoryFragment : Fragment() {
     }
 
     private fun observeData() {
-
+        accountBookViewModel.totalPaymentList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
+            newHistoryViewModel.setPayment(it)
+        }
+        accountBookViewModel.totalCategoryList.observe(this@NewHistoryFragment.viewLifecycleOwner) {
+            newHistoryViewModel.setCategory(it)
+        }
     }
 }

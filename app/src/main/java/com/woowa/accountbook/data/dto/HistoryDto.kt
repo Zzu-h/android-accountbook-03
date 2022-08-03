@@ -1,7 +1,7 @@
 package com.woowa.accountbook.data.dto
 
 import com.woowa.accountbook.data.local.entity.DBHistory
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.History
 
 data class HistoryDto(
     val id: Int,
@@ -15,15 +15,16 @@ data class HistoryDto(
     val type: String
 )
 
-fun HistoryDto.toAccount(): Account {
-    return Account(
+fun HistoryDto.toAccount(): History {
+    return History(
         content = content,
         price = price,
-        payment = "temp",
+        payment = payment.name,
         year = year,
         month = month,
         day = day,
-        type = type
+        type = type,
+        category = category.toCategory()
     )
 }
 
@@ -31,7 +32,7 @@ fun HistoryDto.toDBHistory(): DBHistory {
     return DBHistory(
         id = id,
         price = price,
-        payment = payment?.toDBPayment(),
+        payment = payment.toDBPayment(),
         category = category.toDBCategory(),
         content = content,
         year = year,

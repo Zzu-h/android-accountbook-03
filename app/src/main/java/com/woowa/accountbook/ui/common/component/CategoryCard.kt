@@ -11,18 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.woowa.accountbook.domain.model.Account
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Typography
-import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun CategoryCard(
     category: Category,
     modifier: Modifier = Modifier,
 ) {
-    val text = category.name
+    val text = category.title
     val color = category.color
 
     Box(
@@ -46,16 +44,17 @@ fun CategoryCard(
 @Composable
 fun AccountInfoItemPreview() {
     AccountbookTheme {
-        AccountInfoItem(
-            Account(
+        /*AccountInfoItem(
+            History(
                 content = "Test",
                 payment = "Testing",
                 price = 10020,
                 year = 11,
                 month = 12,
                 day = 12,
-                type = TypeFilter.INCOME
+                type = TypeFilter.INCOME,
+                category =
             )
-        )
+        )*/
     }
 }

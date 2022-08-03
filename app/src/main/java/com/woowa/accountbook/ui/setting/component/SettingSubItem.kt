@@ -34,7 +34,7 @@ fun SettingSubItem(
                 .padding(vertical = 12.dp)
         ) {
             Text(
-                text = item.name,
+                text = item.title,
                 color = Purple700,
                 style = Typography.subtitle2,
                 fontWeight = FontWeight.Bold,

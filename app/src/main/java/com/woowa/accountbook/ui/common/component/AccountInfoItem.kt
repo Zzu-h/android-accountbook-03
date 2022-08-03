@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.StringUtil
@@ -22,7 +22,7 @@ import com.woowa.accountbook.utils.TypeFilter
 
 @Composable
 fun AccountInfoItem(
-    account: Account,
+    account: History,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
 ) {

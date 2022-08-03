@@ -19,13 +19,10 @@ import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.ui.theme.Purple700
 
 @Composable
-fun DropDownComponent() {
-    val countryList = listOf(
-        "United state",
-        "Australia",
-        "Japan",
-        "India",
-    )
+fun DropDownComponent(
+    list: List<String>,
+    onItemClick: (String) -> Unit = {}
+) {
     val text = remember { mutableStateOf("선택하세요") }
     val isOpen = remember { mutableStateOf(false) }
     val textColor = remember { mutableStateOf(Purple200) }
@@ -34,6 +31,7 @@ fun DropDownComponent() {
     }
     val userSelectedString: (String) -> Unit = {
         text.value = it
+        onItemClick(it)
         isOpen.value = isOpen.value.not()
         textColor.value = Purple700
     }
@@ -55,7 +53,7 @@ fun DropDownComponent() {
             }
             SpinnerComponent(
                 requestToOpen = isOpen.value,
-                list = countryList,
+                list = list,
                 request = openCloseOfDropDownList,
                 selectedString = userSelectedString
             )

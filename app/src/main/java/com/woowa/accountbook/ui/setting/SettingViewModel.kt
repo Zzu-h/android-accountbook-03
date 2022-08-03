@@ -2,45 +2,30 @@ package com.woowa.accountbook.ui.setting
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.woowa.accountbook.domain.model.Account
+import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.utils.TypeFilter
 
 class SettingViewModel : ViewModel() {
-    val maxDate = 32
 
-    val historyCalendar = MutableLiveData<List<MutableList<Account>>>()
-    val historyTitle = MutableLiveData("hihi")
+    val incomeCategoryList = MutableLiveData<List<Category>>()
+    val expenditureCategoryList = MutableLiveData<List<Category>>()
+    val paymentList = MutableLiveData<List<Payment>>()
 
-    val incomeFilter = MutableLiveData(true)
-    val expenditureFilter = MutableLiveData(true)
+    fun setPaymentList(totList: List<Payment>) {
+        this.paymentList.value = totList
+    }
 
-    var totIncome = 0
-    var totExpenditure = 0
+    fun setCategoryList(list: List<Category>) {
+        val incomeList = mutableListOf<Category>()
+        val expenditureList = mutableListOf<Category>()
 
-    var year = 2022
-    var month = 7
-
-    fun setTotalData(totList: List<Account>) {
-        totIncome = 0
-        totExpenditure = 0
-        val list = List<MutableList<Account>>(maxDate) { mutableListOf() }
-        totList.forEach {
-            list[it.day].add(it)
-            if (it.type == TypeFilter.INCOME) totIncome += it.price
-            else if (it.type == TypeFilter.EXPENDITURE) totExpenditure += it.price
+        list.forEach {
+            if (it.type == TypeFilter.INCOME) incomeList.add(it)
+            else expenditureList.add(it)
         }
-        historyCalendar.value = list
-    }
 
-    fun filteringIncomeData() {
-        val flag = !(incomeFilter.value ?: true)
-
-        incomeFilter.value = flag
-    }
-
-    fun filteringExpenditureData() {
-        val flag = !(expenditureFilter.value ?: true)
-
-        expenditureFilter.value = flag
+        this.incomeCategoryList.value = incomeList
+        this.expenditureCategoryList.value = expenditureList
     }
 }
