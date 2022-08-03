@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
-import com.woowa.accountbook.domain.model.CategoryStatisticDto
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
@@ -67,10 +66,8 @@ class StatisticFragment : Fragment() {
 
         rootView.findViewById<ComposeView>(R.id.cv_statistic_content).apply {
             setContent {
-                val list = listOf<CategoryStatisticDto>(
-                    /*CategoryStatisticDto(Category(color = Red), 12345, 0.3f),
-                    CategoryStatisticDto(Category(color = Yellow), 12345, 0.3f),
-                    CategoryStatisticDto(Category(color = Purple3), 12345, 0.4f)*/
+                val categoryStatisticDto by statisticViewModel.statisticData.observeAsState(
+                    emptyList()
                 )
                 AccountbookTheme {
                     Column() {
@@ -86,9 +83,9 @@ class StatisticFragment : Fragment() {
                             )
                         }
                         MainDivider()
-                        GraphComponent(list)
+                        GraphComponent(categoryStatisticDto)
                         LazyColumn {
-                            items(list) { item -> CategoryStatisticItem(item = item) }
+                            items(categoryStatisticDto) { item -> CategoryStatisticItem(item = item) }
                         }
                         MainDivider()
                     }

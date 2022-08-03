@@ -8,24 +8,36 @@ import com.woowa.accountbook.utils.TypeFilter
 class CalendarViewModel : ViewModel() {
     val maxDate = 32
 
-    val historyCalendar = MutableLiveData<List<MutableList<History>>>()
+    val historyCalendar = MutableLiveData<List<Pair<Int, Int>>>()
     val historyTitle = MutableLiveData("hihi")
 
-    var totIncome = 0
-    var totExpenditure = 0
+    val totalHistory = MutableLiveData<Pair<Int, Int>>()
 
     var year = 2022
     var month = 7
 
+    private val list = MutableList(maxDate) { Pair(0, 0) }
+
     fun setTotalData(totList: List<History>) {
-        totIncome = 0
-        totExpenditure = 0
-        val list = List<MutableList<History>>(maxDate) { mutableListOf() }
+        var totIncome = 0
+        var totExpenditure = 0
+
+        val income = MutableList(maxDate) { 0 }
+        val expenditure = MutableList(maxDate) { 0 }
         totList.forEach {
-            list[it.day].add(it)
-            if (it.type == TypeFilter.INCOME) totIncome += it.price
-            else if (it.type == TypeFilter.EXPENDITURE) totExpenditure += it.price
+            if (it.type == TypeFilter.INCOME) {
+                totIncome += it.price
+                income[it.day] += it.price
+            } else if (it.type == TypeFilter.EXPENDITURE) {
+                expenditure[it.day] += it.price
+                totExpenditure += it.price
+            }
         }
+
+        repeat(maxDate) { idx ->
+            list[idx] = Pair(income[idx], expenditure[idx])
+        }
+        totalHistory.value = Pair(totIncome, totExpenditure)
         historyCalendar.value = list
     }
 }
