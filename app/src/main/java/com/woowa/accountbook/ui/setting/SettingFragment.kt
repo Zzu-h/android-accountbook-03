@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.Category
+import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
@@ -61,7 +62,12 @@ class SettingFragment : Fragment() {
                             title = "결제수단", itemList = paymentList.map {
                                 Category(it.id, it.name, Purple200, TypeFilter.PAYMENT)
                             }, categoryCardVisible = false,
-                            onClickItem = { changeFragment(TypeFilter.PAYMENT, it) },
+                            onClickItem = {
+                                changeFragment(
+                                    TypeFilter.PAYMENT,
+                                    Payment(it.id, it.title)
+                                )
+                            },
                             onClickAddButton = { changeFragment(TypeFilter.PAYMENT) }
                         )
                         MainDivider()
