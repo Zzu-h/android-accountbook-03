@@ -90,6 +90,7 @@ class ManageHistoryViewModel @Inject constructor(
         val money = price.value
         val isIncome = filterType.value!! == TypeFilter.INCOME
 
-        _buttonEnabled.value = (money != null && (isIncome || pay != null && pay.isNotBlank()))
+        _buttonEnabled.value =
+            (money != null && money.isNotBlank() && (isIncome || pay != null && pay.isNotBlank()))
     }
 }
