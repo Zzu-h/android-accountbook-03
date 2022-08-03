@@ -3,7 +3,7 @@ package com.woowa.accountbook.ui.common.popup
 import android.app.AlertDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
-import android.content.DialogInterface
+import android.content.DialogInterface.OnClickListener
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
@@ -16,8 +16,9 @@ class MonthYearPickerDialog(private val year: Int, private val month: Int) : Dia
     lateinit var binding: DatePickerDialogBinding
 
     private var listener: OnDateSetListener? = null
-    fun setListener(listener: OnDateSetListener?) {
+    fun setListener(listener: OnDateSetListener?): MonthYearPickerDialog {
         this.listener = listener
+        return this
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -32,13 +33,13 @@ class MonthYearPickerDialog(private val year: Int, private val month: Int) : Dia
         monthPicker.maxValue = 11
         monthPicker.value = month
 
-        yearPicker.minValue = year
+        yearPicker.minValue = MIN_YEAR
         yearPicker.maxValue = MAX_YEAR
         yearPicker.value = year
 
         builder.setView(dialog)
             .setPositiveButton(R.string.ok,
-                DialogInterface.OnClickListener { dialog, id ->
+                OnClickListener { dialog, id ->
                     listener!!.onDateSet(
                         null,
                         yearPicker.value,
@@ -47,11 +48,12 @@ class MonthYearPickerDialog(private val year: Int, private val month: Int) : Dia
                     )
                 })
             .setNegativeButton(R.string.cancel,
-                DialogInterface.OnClickListener { dialog, id -> this@MonthYearPickerDialog.dialog!!.cancel() })
+                OnClickListener { dialog, id -> this@MonthYearPickerDialog.dialog!!.cancel() })
         return builder.create()
     }
 
     companion object {
         private const val MAX_YEAR = 2099
+        private const val MIN_YEAR = 2000
     }
 }

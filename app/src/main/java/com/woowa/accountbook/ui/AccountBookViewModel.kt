@@ -55,6 +55,12 @@ class AccountBookViewModel @Inject constructor(
         fetchHistoryList()
     }
 
+    fun setCalendar(y: Int, m: Int) {
+        this._year.value = y
+        this._month.value = m
+        fetchHistoryList()
+    }
+
     private fun fetchHistoryList() {
         if (isNull) return
         viewModelScope.launch {

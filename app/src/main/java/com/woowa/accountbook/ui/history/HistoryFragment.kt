@@ -29,7 +29,6 @@ import com.woowa.accountbook.ui.common.popup.MonthYearPickerDialog
 import com.woowa.accountbook.ui.history.component.HistoryMainFilterButton
 import com.woowa.accountbook.ui.history.manage.ManageHistoryFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
-import com.woowa.accountbook.utils.DateUtil
 import java.io.Serializable
 
 class HistoryFragment : Fragment() {
@@ -67,9 +66,11 @@ class HistoryFragment : Fragment() {
                             onPrevIconPressed = { accountBookViewModel.minusMonth() },
                             onTitlePressed = {
                                 MonthYearPickerDialog(
-                                    DateUtil.currentYear,
-                                    DateUtil.currentMonth
-                                ).show(
+                                    historyViewModel.year,
+                                    historyViewModel.month
+                                ).setListener { _, y, m, d ->
+                                    accountBookViewModel.setCalendar(y, m)
+                                }.show(
                                     parentFragmentManager,
                                     getString(R.string.fragment_calendar)
                                 )
