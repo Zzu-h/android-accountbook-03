@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.theme.Purple700
-import com.woowa.accountbook.ui.theme.Typography
 
 @Composable
 fun SettingMainItem(
@@ -31,7 +31,7 @@ fun SettingMainItem(
             text = title,
             color = Purple700,
             fontWeight = FontWeight.Bold,
-            style = Typography.subtitle2,
+            fontSize = 14.sp,
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_add_24dp),

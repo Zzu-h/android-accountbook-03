@@ -16,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -32,7 +33,6 @@ import com.woowa.accountbook.ui.setting.manage.category.ManageCategoryFragment
 import com.woowa.accountbook.ui.setting.manage.payment.ManagePaymentFragment
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
-import com.woowa.accountbook.ui.theme.Typography
 import com.woowa.accountbook.utils.TypeFilter
 import java.io.Serializable
 
@@ -71,7 +71,7 @@ class SettingFragment : Fragment() {
                         item {
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Text(
-                                    text = "결제수단", color = Purple200, style = Typography.subtitle1,
+                                    text = "결제수단", color = Purple200, fontSize = 16.sp,
                                     modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
                                 )
                                 SubDivider()
@@ -105,7 +105,7 @@ class SettingFragment : Fragment() {
                                 Text(
                                     text = "수입 카테고리",
                                     color = Purple200,
-                                    style = Typography.subtitle1,
+                                    fontSize = 16.sp,
                                     modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
                                 )
                                 SubDivider()
@@ -127,7 +127,7 @@ class SettingFragment : Fragment() {
                                 Text(
                                     text = "지출 카테고리",
                                     color = Purple200,
-                                    style = Typography.subtitle1,
+                                    fontSize = 16.sp,
                                     modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
                                 )
                                 SubDivider()

@@ -68,7 +68,7 @@ class CalendarFragment : Fragment() {
         }
         rootView.findViewById<ComposeView>(R.id.cv_calendar_content).apply {
             setContent {
-                val year by accountBookViewModel.month.observeAsState(2022)
+                val year by accountBookViewModel.year.observeAsState(2022)
                 val month by accountBookViewModel.month.observeAsState(7)
 
                 val totalHistory by calendarViewModel.totalHistory.observeAsState(Pair(0, 0))

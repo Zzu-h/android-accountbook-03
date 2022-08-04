@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.ui.theme.Purple700
@@ -45,7 +46,8 @@ fun DropDownComponent(
                     text = text,
                     modifier = Modifier.align(Alignment.CenterStart),
                     color = textColor,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
                 )
                 Icon(
                     painter = painterResource(id = if (isOpen.value) R.drawable.ic_up_24dp else R.drawable.ic_down_24dp),

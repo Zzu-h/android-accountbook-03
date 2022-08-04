@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 
@@ -51,7 +52,8 @@ fun MainAppBar(
             modifier = Modifier
                 .align(Alignment.Center)
                 .clickable(true, onClick = onTitlePressed),
-            color = contentColor
+            color = contentColor,
+            fontSize = 18.sp
         )
         if (buttonVisible)
             Icon(

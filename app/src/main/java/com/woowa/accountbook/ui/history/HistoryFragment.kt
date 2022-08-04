@@ -121,7 +121,7 @@ class HistoryFragment : Fragment() {
                                         )
                                     }
                                     items(it) { item ->
-                                        HistoryInfoItem(
+                                        HistoryContentItem(
                                             item,
                                             isSelected = trashList.contains(item),
                                             onItemLongClick = { historyViewModel.branchOffTrash(it) },

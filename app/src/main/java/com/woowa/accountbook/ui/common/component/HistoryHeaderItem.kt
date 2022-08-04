@@ -7,7 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.utils.DateUtil
 import com.woowa.accountbook.utils.StringUtil
@@ -21,6 +23,7 @@ fun HistoryHeaderItem(
     day: Int,
 ) {
     val titleColor = MaterialTheme.colors.primaryVariant
+    val fontSize = 12.sp
     var totIncome = 0
     var totExpenditure = 0
 
@@ -43,8 +46,20 @@ fun HistoryHeaderItem(
                 color = titleColor
             )
             Row(modifier = Modifier.align(Alignment.BottomEnd)) {
-                if (totIncome > 0) Text(totIncomeText, color = titleColor)
-                if (totExpenditure > 0) Text(totExpenditureText, color = titleColor)
+                if (totIncome > 0)
+                    Text(
+                        totIncomeText,
+                        color = titleColor,
+                        fontSize = fontSize,
+                        fontWeight = FontWeight.Bold
+                    )
+                if (totExpenditure > 0)
+                    Text(
+                        totExpenditureText,
+                        color = titleColor,
+                        fontSize = fontSize,
+                        fontWeight = FontWeight.Bold
+                    )
             }
         }
     }

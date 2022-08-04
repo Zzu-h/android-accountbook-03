@@ -17,10 +17,6 @@ fun CustomCalendar(
     calendarData: List<Pair<Int, Int>>,
     modifier: Modifier = Modifier,
 ) {
-    // 1. 요일을 받아온다.
-    // 2. 저번 달의 마지막 일 수를 받아온다.
-    // 3. 일주일 중 첫날의 요일을 계산해서 그 수만큼 뺀다.
-    // 4. 추가한다.
     val firstDayOfWeek = DateUtil.getDayOfWeekCode(year, month, 1)
     val currentMaxDay = DateUtil.getLastDayOfMonth(year, month)
 
@@ -32,7 +28,7 @@ fun CustomCalendar(
     val nextCount = (7 - DateUtil.getDayOfWeekCode(year, month, currentMaxDay))
     var day = 1
     var nextDay = 1
-    // 현재 30일 28일 경우에 문제가 발생함
+
     LazyVerticalGrid(
         cells = GridCells.Fixed(7),
     ) {
@@ -44,7 +40,8 @@ fun CustomCalendar(
             CustomCalendarItem(
                 day = day,
                 income = calendarData[day].first,
-                expenditure = calendarData[day].second
+                expenditure = calendarData[day].second,
+                isToday = (year == DateUtil.currentYear && month == DateUtil.currentMonth && day == DateUtil.currentDay)
             )
             day++
         }

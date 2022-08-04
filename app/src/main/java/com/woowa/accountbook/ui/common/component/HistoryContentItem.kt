@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.ui.theme.AccountbookTheme
@@ -25,7 +27,7 @@ import com.woowa.accountbook.utils.TypeFilter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryInfoItem(
+fun HistoryContentItem(
     account: History,
     isSelected: Boolean = false,
     modifier: Modifier = Modifier,
@@ -75,7 +77,8 @@ fun HistoryInfoItem(
                     )
                     Text(
                         text = content,
-                        color = contentColor
+                        color = contentColor,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -91,11 +94,14 @@ fun HistoryInfoItem(
                         .padding(bottom = 8.dp)
                         .align(Alignment.End),
                     color = contentColor,
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
+                    fontSize = 10.sp
                 )
                 Text(
                     text = price,
-                    color = priceColor
+                    color = priceColor,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
@@ -106,7 +112,7 @@ fun HistoryInfoItem(
 @Composable
 fun HistoryInfoItemPreview() {
     AccountbookTheme {
-        /* HistoryInfoItem(
+        /* HistoryContentItem(
              account = HistoryDto(1234, "hi", "content", type = TypeFilter.INCOME).toAccount(),
          )*/
     }

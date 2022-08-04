@@ -19,7 +19,9 @@ import com.woowa.accountbook.ui.theme.AccountbookTheme
 @Composable
 fun ContentWithTitleItem(
     title: String,
-    modifier: Modifier = Modifier.padding(horizontal = 16.dp),
+    modifier: Modifier = Modifier
+        .padding(horizontal = 16.dp)
+        .padding(top = 16.dp),
     titleColor: Color = MaterialTheme.colors.primary,
     titleFontSize: TextUnit = TextUnit.Unspecified,
     titleFontStyle: FontStyle? = null,
@@ -27,7 +29,7 @@ fun ContentWithTitleItem(
     content: @Composable () -> Unit = { Text(text = "Input the Component") }
 ) {
     Column(modifier = modifier) {
-        Row(modifier = Modifier.padding(vertical = 10.dp)) {
+        Row(modifier = Modifier.padding(bottom = 8.dp)) {
             Text(
                 title, modifier = Modifier.defaultMinSize(minWidth = 80.dp),
                 color = titleColor,
