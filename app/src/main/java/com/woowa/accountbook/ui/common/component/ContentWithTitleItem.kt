@@ -11,13 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 
 @Composable
 fun ContentWithTitleItem(
     title: String,
-    modifier: Modifier = Modifier.padding(horizontal = 16.dp),
+    modifier: Modifier = Modifier
+        .padding(horizontal = 16.dp)
+        .padding(top = 16.dp),
     titleColor: Color = MaterialTheme.colors.primary,
     titleFontSize: TextUnit = TextUnit.Unspecified,
     titleFontStyle: FontStyle? = null,
@@ -25,7 +29,7 @@ fun ContentWithTitleItem(
     content: @Composable () -> Unit = { Text(text = "Input the Component") }
 ) {
     Column(modifier = modifier) {
-        Row(modifier = Modifier.padding(vertical = 10.dp)) {
+        Row(modifier = Modifier.padding(bottom = 8.dp)) {
             Text(
                 title, modifier = Modifier.defaultMinSize(minWidth = 80.dp),
                 color = titleColor,
@@ -36,5 +40,13 @@ fun ContentWithTitleItem(
             content()
         }
         SubDivider()
+    }
+}
+
+@Preview
+@Composable
+fun ContentWithTitleItemPreview() {
+    AccountbookTheme {
+        ContentWithTitleItem(title = "Test")
     }
 }

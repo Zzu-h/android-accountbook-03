@@ -63,7 +63,8 @@ fun SpinnerComponent(
                         Text(
                             text = it, modifier = Modifier
                                 .clickable(true) { selectedString(it) }
-                                .padding(vertical = 8.dp),
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
                             color = Purple700
                         )
                     }

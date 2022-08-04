@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -105,6 +106,8 @@ class ManageHistoryFragment : Fragment() {
 
             val buttonEnabled by manageHistoryViewModel.buttonEnabled.observeAsState(false)
 
+            val fontSize = 14.sp
+
             AccountbookTheme {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.align(Alignment.TopCenter)) {
@@ -117,15 +120,16 @@ class ManageHistoryFragment : Fragment() {
                             isActive = !editFlag,
                             modifier = Modifier.padding(16.dp)
                         )
-                        ContentWithTitleItem(title = "일자") {
+                        ContentWithTitleItem(title = "일자", titleFontSize = fontSize) {
                             Text(
                                 DateUtil.getDateToString(date),
                                 modifier = Modifier.clickable(true) { datePickerDialog.show() },
                                 color = MaterialTheme.colors.primary,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                fontSize = fontSize
                             )
                         }
-                        ContentWithTitleItem(title = "금액") {
+                        ContentWithTitleItem(title = "금액", titleFontSize = fontSize) {
                             TextFieldWithHint(
                                 price ?: "",
                                 onValueChange = { manageHistoryViewModel.setPrice(it.toPriceFormat()) },
@@ -133,7 +137,8 @@ class ManageHistoryFragment : Fragment() {
                                 modifier = Modifier.fillMaxWidth(),
                                 textStyle = TextStyle(
                                     color = MaterialTheme.colors.primary,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = fontSize
                                 ),
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                                 cursorToLast = true,
@@ -141,13 +146,14 @@ class ManageHistoryFragment : Fragment() {
                                     Text(
                                         text = "입력하세요",
                                         fontWeight = FontWeight.Bold,
-                                        color = Purple200
+                                        color = Purple200,
+                                        fontSize = fontSize
                                     )
                                 }
                             )
                         }
                         if (filter == TypeFilter.EXPENDITURE) {
-                            ContentWithTitleItem(title = "결제 수단") {
+                            ContentWithTitleItem(title = "결제 수단", titleFontSize = fontSize) {
                                 DropDownComponent(
                                     list = paymentList.map { it.name },
                                     selectItem = payment
@@ -157,7 +163,7 @@ class ManageHistoryFragment : Fragment() {
                                 }
                             }
                         }
-                        ContentWithTitleItem(title = "분류") {
+                        ContentWithTitleItem(title = "분류", titleFontSize = fontSize) {
                             DropDownComponent(
                                 list = categoryList.map { it.title },
                                 selectItem = category
@@ -166,7 +172,7 @@ class ManageHistoryFragment : Fragment() {
                                 else manageHistoryViewModel.setCategory(it)
                             }
                         }
-                        ContentWithTitleItem(title = "내용") {
+                        ContentWithTitleItem(title = "내용", titleFontSize = fontSize) {
                             TextFieldWithHint(
                                 content,
                                 onValueChange = { str -> manageHistoryViewModel.setContent(str) },
@@ -180,7 +186,8 @@ class ManageHistoryFragment : Fragment() {
                                     Text(
                                         text = "입력하세요",
                                         fontWeight = FontWeight.Bold,
-                                        color = Purple200
+                                        color = Purple200,
+                                        fontSize = fontSize
                                     )
                                 }
                             )
@@ -189,7 +196,7 @@ class ManageHistoryFragment : Fragment() {
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(vertical = 40.dp)
+                            .padding(vertical = 40.dp, horizontal = 16.dp)
                     ) {
                         CommonButton(
                             text = if (editFlag) "수정하기" else "등록하기",

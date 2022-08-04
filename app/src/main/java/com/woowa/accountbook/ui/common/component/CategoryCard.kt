@@ -42,19 +42,8 @@ fun CategoryCard(
 
 @Preview
 @Composable
-fun AccountInfoItemPreview() {
+fun CategoryCardPreview() {
     AccountbookTheme {
-        /*AccountInfoItem(
-            History(
-                content = "Test",
-                payment = "Testing",
-                price = 10020,
-                year = 11,
-                month = 12,
-                day = 12,
-                type = TypeFilter.INCOME,
-                category =
-            )
-        )*/
+        //CategoryCard(Category())
     }
 }

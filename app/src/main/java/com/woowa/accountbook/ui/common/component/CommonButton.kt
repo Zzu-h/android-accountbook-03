@@ -12,7 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.DisableYellow
 import com.woowa.accountbook.ui.theme.Yellow
 
@@ -43,4 +45,12 @@ fun CommonButton(
         interactionSource = interactionSource,
         shape = RoundedCornerShape(14)
     ) { Text(text = text) }
+}
+
+@Preview
+@Composable
+fun CommonButtonPreview() {
+    AccountbookTheme {
+        CommonButton(text = "Preview!")
+    }
 }

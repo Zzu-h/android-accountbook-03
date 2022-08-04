@@ -6,9 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -18,6 +26,8 @@ import com.woowa.accountbook.domain.model.Payment
 import com.woowa.accountbook.ui.AccountBookViewModel
 import com.woowa.accountbook.ui.common.component.MainAppBar
 import com.woowa.accountbook.ui.common.component.MainDivider
+import com.woowa.accountbook.ui.common.component.SubDivider
+import com.woowa.accountbook.ui.setting.component.SettingContentItem
 import com.woowa.accountbook.ui.setting.component.SettingMainItem
 import com.woowa.accountbook.ui.setting.manage.category.ManageCategoryFragment
 import com.woowa.accountbook.ui.setting.manage.payment.ManagePaymentFragment
@@ -57,32 +67,83 @@ class SettingFragment : Fragment() {
                 val paymentList by settingViewModel.paymentList.observeAsState(emptyList())
 
                 AccountbookTheme {
-                    Column {
-                        SettingMainItem(
-                            title = "결제수단", itemList = paymentList.map {
-                                Category(it.id, it.name, Purple200, TypeFilter.PAYMENT)
-                            }, categoryCardVisible = false,
-                            onClickItem = {
-                                changeFragment(
-                                    TypeFilter.PAYMENT,
-                                    Payment(it.id, it.title)
+                    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        item {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "결제수단", color = Purple200, fontSize = 16.sp,
+                                    modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
                                 )
-                            },
-                            onClickAddButton = { changeFragment(TypeFilter.PAYMENT) }
-                        )
-                        MainDivider()
-                        SettingMainItem(
-                            title = "수입 카테고리", itemList = incomeList,
-                            onClickItem = { changeFragment(TypeFilter.INCOME, it) },
-                            onClickAddButton = { changeFragment(TypeFilter.INCOME) }
-                        )
-                        MainDivider()
-                        SettingMainItem(
-                            title = "지출 카테고리", itemList = expenditureList,
-                            onClickItem = { changeFragment(TypeFilter.EXPENDITURE, it) },
-                            onClickAddButton = { changeFragment(TypeFilter.EXPENDITURE) }
-                        )
-                        MainDivider()
+                                SubDivider()
+                            }
+                        }
+                        items(paymentList.map {
+                            Category(
+                                it.id,
+                                it.name,
+                                Purple200,
+                                TypeFilter.PAYMENT
+                            )
+                        }) { item ->
+                            SettingContentItem(
+                                item = item,
+                                categoryCardVisible = false,
+                                onClickItem = {
+                                    changeFragment(
+                                        TypeFilter.PAYMENT,
+                                        Payment(it.id, it.title)
+                                    )
+                                }
+                            )
+                        }
+                        item {
+                            SettingMainItem("결제수단 추가하기") { changeFragment(TypeFilter.PAYMENT) }
+                            MainDivider()
+                        }
+                        item {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "수입 카테고리",
+                                    color = Purple200,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
+                                )
+                                SubDivider()
+                            }
+                        }
+                        items(incomeList) { item ->
+                            SettingContentItem(
+                                item = item,
+                                categoryCardVisible = false,
+                                onClickItem = { changeFragment(TypeFilter.INCOME, it) }
+                            )
+                        }
+                        item {
+                            SettingMainItem("수입 카테고리 추가하기") { changeFragment(TypeFilter.INCOME) }
+                            MainDivider()
+                        }
+                        item {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    text = "지출 카테고리",
+                                    color = Purple200,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(bottom = 10.dp, top = 24.dp)
+                                )
+                                SubDivider()
+                            }
+                        }
+                        items(expenditureList) { item ->
+                            SettingContentItem(
+                                item = item,
+                                categoryCardVisible = false,
+                                onClickItem = { changeFragment(TypeFilter.EXPENDITURE, it) },
+                            )
+                        }
+                        item {
+                            SettingMainItem("지출 카테고리 추가하기") { changeFragment(TypeFilter.EXPENDITURE) }
+                            MainDivider()
+                        }
                     }
                 }
             }

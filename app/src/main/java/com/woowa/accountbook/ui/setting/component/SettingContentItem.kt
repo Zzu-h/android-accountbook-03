@@ -11,14 +11,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.ui.common.component.CategoryCard
 import com.woowa.accountbook.ui.common.component.SubDivider
 import com.woowa.accountbook.ui.theme.Purple700
-import com.woowa.accountbook.ui.theme.Typography
 
 @Composable
-fun SettingSubItem(
+fun SettingContentItem(
     item: Category,
     categoryCardVisible: Boolean = true,
     onClickItem: (Category) -> Unit = { },
@@ -36,7 +36,7 @@ fun SettingSubItem(
             Text(
                 text = item.title,
                 color = Purple700,
-                style = Typography.subtitle2,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.CenterStart)
             )

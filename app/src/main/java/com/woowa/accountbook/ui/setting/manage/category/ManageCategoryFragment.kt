@@ -67,7 +67,11 @@ class ManageCategoryFragment : Fragment() {
                 val buttonActive by manageCategoryViewModel.buttonEnabled.observeAsState(false)
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    Column(modifier = Modifier.align(Alignment.TopCenter)) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(vertical = 8.dp)
+                    ) {
                         ContentWithTitleItem(title = "이름") {
                             TextFieldWithHint(
                                 name,

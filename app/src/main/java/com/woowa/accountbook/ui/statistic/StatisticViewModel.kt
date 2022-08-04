@@ -3,7 +3,7 @@ package com.woowa.accountbook.ui.statistic
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.woowa.accountbook.domain.model.Category
-import com.woowa.accountbook.domain.model.CategoryStatisticDto
+import com.woowa.accountbook.domain.model.CategoryStatistic
 import com.woowa.accountbook.domain.model.History
 import com.woowa.accountbook.utils.TypeFilter
 
@@ -11,7 +11,7 @@ class StatisticViewModel : ViewModel() {
 
     private var loadedData = mutableListOf<Pair>()
 
-    val statisticData = MutableLiveData<MutableList<CategoryStatisticDto>>()
+    val statisticData = MutableLiveData<MutableList<CategoryStatistic>>()
     val statisticTitle = MutableLiveData("hihi")
     val totalHistory = MutableLiveData<Int>()
 
@@ -39,11 +39,11 @@ class StatisticViewModel : ViewModel() {
                 }
             }
 
-            val statisticList = mutableListOf<CategoryStatisticDto>()
+            val statisticList = mutableListOf<CategoryStatistic>()
             loadedData.forEach {
                 if (it.price > 0)
                     statisticList.add(
-                        CategoryStatisticDto(
+                        CategoryStatistic(
                             it.category,
                             it.price,
                             (it.price.toFloat() / totExpenditure.toFloat())
