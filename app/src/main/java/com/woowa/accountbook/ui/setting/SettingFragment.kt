@@ -114,7 +114,6 @@ class SettingFragment : Fragment() {
                         items(incomeList) { item ->
                             SettingContentItem(
                                 item = item,
-                                categoryCardVisible = false,
                                 onClickItem = { changeFragment(TypeFilter.INCOME, it) }
                             )
                         }
@@ -136,7 +135,6 @@ class SettingFragment : Fragment() {
                         items(expenditureList) { item ->
                             SettingContentItem(
                                 item = item,
-                                categoryCardVisible = false,
                                 onClickItem = { changeFragment(TypeFilter.EXPENDITURE, it) },
                             )
                         }
