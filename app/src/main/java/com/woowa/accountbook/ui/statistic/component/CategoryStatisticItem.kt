@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.domain.model.Category
-import com.woowa.accountbook.domain.model.CategoryStatisticDto
+import com.woowa.accountbook.domain.model.CategoryStatistic
 import com.woowa.accountbook.ui.common.component.CategoryCard
 import com.woowa.accountbook.ui.common.component.SubDivider
 import com.woowa.accountbook.ui.theme.AccountbookTheme
@@ -23,7 +23,7 @@ import com.woowa.accountbook.utils.StringUtil
 
 @Composable
 fun CategoryStatisticItem(
-    item: CategoryStatisticDto,
+    item: CategoryStatistic,
     verticalPadding: Dp = 10.dp,
     horizontalPadding: Dp = 16.dp,
     onClick: (Category) -> Unit = {}

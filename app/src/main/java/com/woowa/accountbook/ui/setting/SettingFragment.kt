@@ -97,7 +97,7 @@ class SettingFragment : Fragment() {
                             )
                         }
                         item {
-                            SettingMainItem("결제수단 추가하기"){ changeFragment(TypeFilter.PAYMENT) }
+                            SettingMainItem("결제수단 추가하기") { changeFragment(TypeFilter.PAYMENT) }
                             MainDivider()
                         }
                         item {
@@ -119,7 +119,7 @@ class SettingFragment : Fragment() {
                             )
                         }
                         item {
-                            SettingMainItem("수입 카테고리 추가하기"){ changeFragment(TypeFilter.INCOME) }
+                            SettingMainItem("수입 카테고리 추가하기") { changeFragment(TypeFilter.INCOME) }
                             MainDivider()
                         }
                         item {
@@ -141,7 +141,7 @@ class SettingFragment : Fragment() {
                             )
                         }
                         item {
-                            SettingMainItem("지출 카테고리 추가하기"){ changeFragment(TypeFilter.EXPENDITURE) }
+                            SettingMainItem("지출 카테고리 추가하기") { changeFragment(TypeFilter.EXPENDITURE) }
                             MainDivider()
                         }
                     }

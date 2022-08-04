@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.woowa.accountbook.domain.model.CategoryStatisticDto
-import com.woowa.accountbook.domain.model.toSliceOfPieChartData
+import com.woowa.accountbook.domain.model.CategoryStatistic
 import com.woowa.accountbook.ui.theme.AccountbookTheme
 import me.bytebeats.views.charts.pie.PieChart
 import me.bytebeats.views.charts.pie.PieChartData
@@ -20,7 +19,7 @@ import me.bytebeats.views.charts.simpleChartAnimation
 
 @Composable
 fun GraphComponent(
-    dataList: List<CategoryStatisticDto>,
+    dataList: List<CategoryStatistic>,
     thickness: Float = 43f,
     horizontalPadding: Dp = 54.dp,
     verticalPadding: Dp = 24.dp,
