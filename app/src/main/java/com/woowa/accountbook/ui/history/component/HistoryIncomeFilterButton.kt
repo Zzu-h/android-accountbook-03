@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Purple200
 import com.woowa.accountbook.utils.StringUtil
 
@@ -51,5 +53,13 @@ fun HistoryIncomeFilterButton(
         Text(text = "  수입  ")
         if (itemVisible)
             Text(text = StringUtil.getMoneyFormatString(totPrice))
+    }
+}
+
+@Preview
+@Composable
+fun HistoryIncomeFilterButtonPreview() {
+    AccountbookTheme {
+        HistoryIncomeFilterButton(isChecked = true, isActive = true)
     }
 }

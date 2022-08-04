@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.domain.model.Category
 import com.woowa.accountbook.domain.model.CategoryStatisticDto
 import com.woowa.accountbook.ui.common.component.CategoryCard
 import com.woowa.accountbook.ui.common.component.SubDivider
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.utils.StringUtil
 
 @Composable
@@ -45,5 +47,13 @@ fun CategoryStatisticItem(
             )
         }
         SubDivider()
+    }
+}
+
+@Composable
+@Preview
+fun CategoryStatisticItemPreview() {
+    AccountbookTheme {
+        //CategoryStatisticItem(CategoryStatisticDto(Category(), 12345, 0.3f))
     }
 }

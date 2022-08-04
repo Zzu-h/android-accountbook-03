@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
 import com.woowa.accountbook.domain.model.History
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.ui.theme.Red
 import com.woowa.accountbook.ui.theme.Teal200
 import com.woowa.accountbook.utils.StringUtil
@@ -97,5 +99,15 @@ fun HistoryInfoItem(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun HistoryInfoItemPreview() {
+    AccountbookTheme {
+        /* HistoryInfoItem(
+             account = HistoryDto(1234, "hi", "content", type = TypeFilter.INCOME).toAccount(),
+         )*/
     }
 }

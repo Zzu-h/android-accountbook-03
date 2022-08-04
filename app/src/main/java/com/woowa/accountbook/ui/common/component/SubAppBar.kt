@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.woowa.accountbook.R
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 
 @Composable
 fun SubAppBar(
@@ -66,5 +68,13 @@ fun SubAppBar(
             color = contentColor,
             thickness = 1.dp,
         )
+    }
+}
+
+@Preview
+@Composable
+fun SubAppBarPreview() {
+    AccountbookTheme {
+        SubAppBar(title = "Preview!")
     }
 }

@@ -5,6 +5,8 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.woowa.accountbook.ui.theme.AccountbookTheme
 import com.woowa.accountbook.utils.DateUtil
 
 @ExperimentalFoundationApi
@@ -50,5 +52,14 @@ fun CustomCalendar(
             CustomCalendarItem(day = nextDay, isVisible = false)
             nextDay++
         }
+    }
+}
+
+@ExperimentalFoundationApi
+@Preview
+@Composable
+fun CalendarPreviews() {
+    AccountbookTheme {
+        CustomCalendar(year = 2022, month = 7, calendarData = List(31) { Pair(30231, 585959) })
     }
 }
