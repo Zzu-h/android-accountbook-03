@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_history"
+        android:enabled="true"
+        android:icon="@drawable/ic_history_24dp"
+        android:title="내역" />
+    <item
+        android:id="@+id/item_calendar"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar_24dp"
+        android:title="달력" />
+    <item
+        android:id="@+id/item_statistic"
+        android:enabled="true"
+        android:icon="@drawable/ic_statistic_24dp"
+        android:title="통계" />
+    <item
+        android:id="@+id/item_setting"
+        android:enabled="true"
+        android:icon="@drawable/ic_setting_24dp"
+        android:title="설정" />
+</menu>
